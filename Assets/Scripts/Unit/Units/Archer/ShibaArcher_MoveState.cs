@@ -25,20 +25,9 @@ public class ShibaArcher_MoveState : MoveState
     {
         base.LogicUpdate();
 
-        if (entity.health.currentHealth <= 0)
-        {
-            stateMachine.ChangeState(shibaArcher.deathState);
-        }
-
-        if (entity.CheckEnemy(entity.entityData.checkEnemyDistance))
-        {
-            stateMachine.ChangeState(shibaArcher.attackState);
-        }
-
-        if (entity.CheckWall())
-        {
-            stateMachine.ChangeState(shibaArcher.idleState);
-        }
+        if (BattleCommunicator.instance.CheckEnemyTower(shibaArcher)) stateMachine.ChangeState(shibaArcher.attackState);
+        if (BattleCommunicator.instance.CheckEnemy(shibaArcher)) stateMachine.ChangeState(shibaArcher.attackState);
+        if (BattleCommunicator.instance.CheckBarrier(shibaArcher)) stateMachine.ChangeState(shibaArcher.idleState);
     }
 
     public override void PhysicsUpdate()    

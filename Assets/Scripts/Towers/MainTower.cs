@@ -2,29 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainTower : MonoBehaviour
+public class MainTower : MonoBehaviour, IDamageable
 {
-    public enum PlayerSide
-    {
-        leftPlayer,
-        rightPlayer
-    }
-
     public PlayerSide playerSide;
 
-    public InterfaceManager buttonManager;
+    public int maxHealth = 250;
+    public float distance;
+    public Transform healthBar;
 
-    public int gold;
-    public int mana;
+    public float MaxHealth { get; set; }
+    public float CurrentHealth { get; set; }
+    public Transform SelfTransform { get; set; }
+    public bool IsDead { get; set; }
 
-    public Vector2 spawnPosition;
-
-    public  void PayGold(int price)
+    public virtual void Start()
     {
-        if (gold >= price) gold -= price;
+        MaxHealth = maxHealth;
+        CurrentHealth = MaxHealth;
+        SelfTransform = transform;
+
+        BattleCommunicator.instance.AddMainTower(this);
     }
-    public  void PayMana(int price)
+
+    public void GetDamage(float damage)
     {
-        if (mana >= price) mana -= price;
+        if (IsDead != true)
+        {
+            CurrentHealth -= damage;
+            healthBar.localScale = new Vector2(Mathf.Clamp01(CurrentHealth / MaxHealth), 1f);
+
+            if (CurrentHealth <= 0) KillSelf();
+        }
+    }
+
+    public void KillSelf()
+    {
+        print(playerSide + "Был уничтожен");
     }
 }

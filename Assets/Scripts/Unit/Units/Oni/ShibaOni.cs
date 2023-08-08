@@ -13,25 +13,27 @@ public class ShibaOni : Entity
     public Transform AttackPoint;
 
 
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
+
         moveState = new ShibaOni_MoveState(this, stateMachine, "Move", this);
         attackState = new ShibaOni_AttackState(this, stateMachine, "Attack", this);
         deathState = new ShibaOni_DeathState(this, stateMachine, "Death", this);
         idleState = new ShibaOni_IdleState(this, stateMachine, "Idle", this);
-
-        if (neutralState) stateMachine.Initialize(idleState);
-        else stateMachine.Initialize(moveState);
     }
-
+    private void OnEnable()
+    {
+        stateMachine.Initialize(idleState);
+    }
     public override void Attack()
     {
         base.Attack();
-        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, Vector2.right * direction, 6f, layerMaskEnemy);
-        foreach(RaycastHit2D item in hit)
+
+        List<Entity> enemies = BattleCommunicator.instance.CheckEnemies(this);
+        foreach (Entity unit in enemies)
         {
-            item.transform.gameObject.GetComponent<Health>().GetDamage(50);
+            unit.GetDamage(damage);
         }
     }
 

@@ -23,15 +23,15 @@ public class MiniMapIcon : MonoBehaviour
 
     private void MoveIcon()
     {
-        if(entity.playerSide == 0) t = entity.distance / entity.pathLength;
-        else t = (entity.pathLength + entity.distance) / entity.pathLength;
+        //if(entity.playerSide == 0) t = entity.distance / entity.pathLength;
+        //else t = (entity.pathLength + entity.distance) / entity.pathLength;
 
         gameObject.transform.position = Vector2.Lerp(startPoint.position, endPoint.position, t);
     }
 
     private void CheckIsAlive()
     {
-        if (entity.isDeath)
+        if (entity.IsDead)
         {
             Destroy(gameObject, 1f);
         }

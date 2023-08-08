@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class ShibaNinja : Entity
 {
     // ОСОБОЕ УМЕНИЕ
-    public Button abilityButton;
-    private Health abilityPrey;
+    //public Button abilityButton;
+    //private Entity abilityPrey;
 
-    private bool isAbilityAvailable = true;
-    private bool isAbilityRefreshed = false;
+    //private bool isAbilityAvailable = true;
+    //private bool isAbilityRefreshed = false;
 
 
     public Ninja_MoveState moveState { get; private set; }
@@ -20,27 +20,27 @@ public class ShibaNinja : Entity
     public Ninja_AbilityState abilityState { get; private set; }
 
 
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
+
         moveState = new Ninja_MoveState(this, stateMachine, "Move", this);
         attackState = new Ninja_AttackState(this, stateMachine, "Attack", this);
         deathState = new Ninja_DeathState(this, stateMachine, "Death", this);
         idleState = new Ninja_IdleState(this, stateMachine, "Idle", this);
         abilityState = new Ninja_AbilityState(this, stateMachine, "Ability", this);
-
-        if (neutralState) stateMachine.Initialize(idleState);
-        else stateMachine.Initialize(moveState);
-
-        StatsBuff();
     }
 
-    
+    private void OnEnable()
+    {
+        stateMachine.Initialize(idleState);
+    }
+
     public override void Update()
     {
         base.Update();
 
-        CheckHealthLimit();
+        //CheckHealthLimit();
     }
 
     public override void Attack()
@@ -50,25 +50,17 @@ public class ShibaNinja : Entity
         enemy.GetDamage(damage);
     }
 
-
-    // Способность
-
-    public void SearchFragileUnits()
+    public override void KillSelf()
     {
-        if (!isAbilityAvailable) return;
-
-        if (Physics2D.Raycast(transform.position, Vector2.right * direction, 18f, layerMaskEnemyFragileUnits))
-        {
-            abilityPrey = Physics2D.Raycast(transform.position, Vector2.right * direction, 18f, layerMaskEnemyFragileUnits).transform.GetComponent<Health>();
-            abilityButton.animator.SetBool("ViewButton", true);
-        }
-        else
-        {
-            abilityButton.animator.SetBool("ViewButton", false);
-        }
+        base.KillSelf();
+        stateMachine.ChangeState(deathState);
     }
 
-    public override void StartAbilityState()
+
+}
+
+
+/*    public override void StartAbilityState()
     {
         base.StartAbilityState();
 
@@ -80,13 +72,28 @@ public class ShibaNinja : Entity
     public void Assassinate()
     {
         abilityPrey.GetDamage(100);
-    }
+    }*/
 
+// Способность
 
+/*   public void SearchFragileUnits()
+   {
+       if (!isAbilityAvailable) return;
 
-    //Адреналин
+       if (Physics2D.Raycast(transform.position, Vector2.right * direction, 18f, layerMaskEnemyFragileUnits))
+       {
+           abilityPrey = Physics2D.Raycast(transform.position, Vector2.right * direction, 18f, layerMaskEnemyFragileUnits).transform.GetComponent<Health>();
+           abilityButton.animator.SetBool("ViewButton", true);
+       }
+       else
+       {
+           abilityButton.animator.SetBool("ViewButton", false);
+       }
+   }*/
 
-    public override void CheckHealthLimit()
+//Адреналин
+
+/*    public override void CheckHealthLimit()
     {
         if (upgradePath == 1 || isAbilityRefreshed) return;
 
@@ -95,10 +102,9 @@ public class ShibaNinja : Entity
             isAbilityAvailable = true;
             isAbilityRefreshed = true;
         } 
-            
-    }
+
+    }*/
 
 
-    // Прокачка
+// Прокачка
 
-}

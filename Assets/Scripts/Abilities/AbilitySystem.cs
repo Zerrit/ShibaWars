@@ -8,14 +8,10 @@ public  class AbilitySystem : MonoBehaviour
 
     [Header("Abilities")]
     [SerializeField]
-    public List<Ability> ability;
+    public List<Ability> abilities;
 
-    private int chosenAbility = -1;
-
-    private void Start()
-    {
-        FillButtonData();
-    }
+    private bool isAbilityChosen = false;
+    private int chosenAbility;
 
     public void Update()
     {
@@ -26,10 +22,10 @@ public  class AbilitySystem : MonoBehaviour
     {
         if (chosenAbility != -1 && Input.GetMouseButtonDown(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).y < 15)
         {
-            if(ability[chosenAbility].UseAbility(Input.mousePosition))
+            if(abilities[chosenAbility].UseAbility(Input.mousePosition))
             {
-                ability[chosenAbility].button.StartCooldown();
-                tower.PayMana(ability[chosenAbility].parameters.cost);
+                //abilities[chosenAbility].button.StartCooldown();
+                tower.PayMana(abilities[chosenAbility].buttonParameters.cost);
                 chosenAbility = -1;
             }      
         } 
@@ -37,44 +33,19 @@ public  class AbilitySystem : MonoBehaviour
 
     public void ActiveAbility(int number)
     {
-        if (chosenAbility == number)
+        if (isAbilityChosen)
         {
-            chosenAbility = -1;
+            isAbilityChosen = false;
         }
         else
         {
-            if(ability[((int)number)].parameters.cost <= tower.mana && !ability[(int)number].button.onCooldown)
+/*            if(abilities[((int)number)].buttonParameters.cost <= tower.mana && !abilities[(int)number].button.onCooldown)
             {
                 chosenAbility = number;
-            }
+                isAbilityChosen = true;
+            }*/
         }
         
     }
 
-
-    private void FillButtonData()
-    {
-        for (int i = 0; i < 2; i++)
-        {
-            ability[i].button = tower.buttonManager.abilityButtons[i];
-        }
-
-        foreach (Ability abil in ability)
-        {
-            abil.button.button.image.sprite = abil.parameters.buttonIcone;
-            abil.button.price.text = abil.parameters.cost.ToString();
-            abil.button.cooldown = abil.parameters.cooldown;
-            abil.button.cost = abil.parameters.cost;
-
-            abil.button.firstPathText = abil.parameters.firstPath;
-            abil.button.firstPathFirstUpgradeText = abil.parameters.firstPathFirstUpgrade;
-            abil.button.firstPathSecondUpgradeText = abil.parameters.firstPathSecondUpgrade;
-
-            abil.button.secondPathText = abil.parameters.secondPath;
-            abil.button.secondPathFirstUpgradeText = abil.parameters.secondPathFirstUpgrade;
-            abil.button.secondPathSecondUpgradeText = abil.parameters.secondPathSecondUpgrade;
-
-            abil.button.button.onClick.AddListener(() => ActiveAbility(abil.button.buttonId));
-        }
-    }
 }

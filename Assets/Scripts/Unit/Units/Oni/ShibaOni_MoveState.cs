@@ -24,22 +24,10 @@ public class ShibaOni_MoveState : MoveState
     {
         base.LogicUpdate();
 
-        if (entity.health.currentHealth <= 0)
-        {
-            stateMachine.ChangeState(shibaOni.deathState);
-        }
-
-        if (entity.CheckEnemy(entity.entityData.checkEnemyDistance))
-        {
-            stateMachine.ChangeState(shibaOni.attackState);
-        }
-
-        if (entity.CheckWall())
-        {
-            stateMachine.ChangeState(shibaOni.idleState);
-        }
+        if (BattleCommunicator.instance.CheckEnemyTower(shibaOni)) stateMachine.ChangeState(shibaOni.attackState);
+        if (BattleCommunicator.instance.CheckEnemy(shibaOni)) stateMachine.ChangeState(shibaOni.attackState);
+        if (BattleCommunicator.instance.CheckBarrier(shibaOni)) stateMachine.ChangeState(shibaOni.idleState);
     }
-
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();

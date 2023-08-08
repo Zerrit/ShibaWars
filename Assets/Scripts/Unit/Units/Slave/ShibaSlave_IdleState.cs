@@ -23,7 +23,7 @@ public class ShibaSlave_IdleState : IdleState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
+/*
         if (entity.health.currentHealth <= 0)
         {
             stateMachine.ChangeState(shibaSlave.deathState);
@@ -32,7 +32,7 @@ public class ShibaSlave_IdleState : IdleState
         if (!entity.CheckWall() && !shibaSlave.CheckEnemyWall())
         {
             stateMachine.ChangeState(shibaSlave.moveState);
-        }
+        }*/
     }
 
     public override void PhysicsUpdate()

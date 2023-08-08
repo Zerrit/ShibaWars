@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ab8be62892419d48879846e7f62fe77, type: 3}
+  m_Name: BarricadeButton
+  m_EditorClassIdentifier: 
+  buttonName: Barricade
+  buttonIcone: {fileID: -6189617579038136581, guid: 01ad5d8432c147d46bce6d6ca5539755, type: 3}
+  cooldown: 10
+  cost: 20
+  statsUpgrade: 
+  specialUpgrade: 

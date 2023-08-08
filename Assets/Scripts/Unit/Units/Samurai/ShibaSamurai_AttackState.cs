@@ -24,24 +24,10 @@ public class ShibaSamurai_AttackState : AttackState
     {
         base.LogicUpdate();
 
-        if (entity.health.currentHealth <= 0)
-        {
-            stateMachine.ChangeState(shibaSamurai.deathState);
-        }
-
-        if (entity.enemy.col.enabled == false && entity.attackFinished)
+        if (entity.enemy.IsDead == true && entity.attackFinished)
         {
             stateMachine.ChangeState(shibaSamurai.moveState);
         }
-        else if (entity.enemy.transform.position.x * entity.direction * -1 >= entity.transform.position.x * entity.direction * -1)
-        {
-            stateMachine.ChangeState(shibaSamurai.moveState);
-        }
-        else if (entity.direction * -1 * entity.enemy.transform.position.x + entity.maxAttackRange <= entity.direction * -1 * entity.transform.position.x)
-        {
-            stateMachine.ChangeState(shibaSamurai.moveState);
-        }
-
     }
 
     public override void PhysicsUpdate()

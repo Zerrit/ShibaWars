@@ -6,9 +6,7 @@ using UnityEngine;
 public struct UnitStruct 
 {
     public Entity unit;
-    public ButtonController unitButton;
-    public ButtonParameters unitParameters;
-    public int upgradePath;
-    public int subUpgradePath;
+    public ButtonParameters buttonParameters;
+    public ObjectPooller<Entity> pool;
 }
 

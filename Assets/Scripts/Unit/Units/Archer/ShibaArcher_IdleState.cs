@@ -24,31 +24,7 @@ public class ShibaArcher_IdleState : IdleState
     {
         base.LogicUpdate();
 
-        if (entity.health.currentHealth <= 0)
-        {
-            stateMachine.ChangeState(shibaArcher.deathState);
-        }
-
-        if (entity.neutralState)
-        {
-            if (entity.health.currentHealth < entity.health.maxHealth || entity.CheckEnemy(entity.entityData.checkEnemyDistance + 2f))
-            {
-                stateMachine.ChangeState(shibaArcher.moveState);
-                entity.neutralState = false;
-            }
-        }
-        else
-        {
-            if (entity.CheckEnemy(entity.entityData.checkEnemyDistance))
-            {
-                stateMachine.ChangeState(shibaArcher.attackState);
-            }
-
-            if (!entity.CheckWall())
-            {
-                stateMachine.ChangeState(shibaArcher.moveState);
-            }
-        }
+        if (Time.time >= startTime + 0.7f) stateMachine.ChangeState(shibaArcher.moveState);
     }
 
     public override void PhysicsUpdate()

@@ -16,5 +16,9 @@ MonoBehaviour:
   buttonIcone: {fileID: 861661823662271204, guid: 01ad5d8432c147d46bce6d6ca5539755, type: 3}
   cooldown: 3
   cost: 10
-  statsUpgrade: 
-  specialUpgrade: 
+  firstPath: r
+  firstPathFirstUpgrade: hrt
+  firstPathSecondUpgrade: rth
+  secondPath: erth
+  secondPathFirstUpgrade: thr
+  secondPathSecondUpgrade: hrth

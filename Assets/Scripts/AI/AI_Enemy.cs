@@ -12,35 +12,31 @@ public class AI_Enemy : MonoBehaviour
 
     public void Start()
     {
-        startTimeSlaveCreate = Time.time;
         startTimeSamuraiCreate = Time.time;
-        startTimeArcherCreate = Time.time;
 
-        tower.CreateShibaSlave();
     }
 
     private void Update()
     {
-        ShibaSlaveCreating();
         ShibaSamuraiCreating();
-        ShibaArcherCreating();
+        //ShibaArcherCreating();
     }
 
-    private void ShibaSlaveCreating()
+/*    private void ShibaSlaveCreating()
     {
         if (Time.time >= startTimeSlaveCreate + 15f * tower.slaves.Count && tower.slaves.Count <= 5)
         {
             tower.CreateShibaSlave();
             startTimeSlaveCreate = Time.time;
         }
-    }
+    }*/
 
     private void ShibaSamuraiCreating()
     {
-        if (Time.time >= startTimeSamuraiCreate + Random.Range(10f, 20f))
+        if (Time.time >= startTimeSamuraiCreate + 8f)
         {
-            tower.CreateShibaSamurai();
             startTimeSamuraiCreate = Time.time;
+            tower.CreateShibaSamurai();
         }
     }
 

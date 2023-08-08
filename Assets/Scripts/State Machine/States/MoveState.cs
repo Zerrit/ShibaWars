@@ -22,10 +22,8 @@ public class MoveState : State
     {
         base.LogicUpdate();
 
-        entity.CheckAllies();
+        BattleCommunicator.instance.CheckAllies(entity);
         entity.Move();
-        entity.CheckWall();
-
     }
 
     public override void PhysicsUpdate()

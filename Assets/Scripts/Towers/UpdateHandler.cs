@@ -9,10 +9,10 @@ public class UpdateHandler : MonoBehaviour
 
     private void Start()
     {
-        unitSpawner = GetComponent<UnitsSpawner>();
+        //unitSpawner = GetComponent<UnitsSpawner>();
         abilitySystem = GetComponent<AbilitySystem>();
     }
-
+/*
     private void OnEnable()
     {
         UIEvents.OnUnitUpgrade += UpgradeUnit;
@@ -23,13 +23,13 @@ public class UpdateHandler : MonoBehaviour
         UIEvents.OnUnitUpgrade -= UpgradeUnit;
         UIEvents.OnAbilityUpgrade -= UpgradeAbility;
     }
-
-    public void UpgradeUnit(int playerSide, int unitId, int upgradeOption)
+*/
+/*    public void UpgradeUnit(int playerSide, int unitId, int upgradeOption)
     {
         if ((int)unitSpawner.tower.playerSide != playerSide) return;
 
-        if (unitSpawner.unitsStruct[unitId].upgradePath == 0) unitSpawner.unitsStruct[unitId].upgradePath = upgradeOption;
-        else unitSpawner.unitsStruct[unitId].subUpgradePath = upgradeOption;
+        if (unitSpawner.unitsData[unitId].upgradePath == 0) unitSpawner.unitsData[unitId].upgradePath = upgradeOption;
+        else unitSpawner.unitsData[unitId].subUpgradePath = upgradeOption;
     }
 
     public void UpgradeAbility(int playerSide, int abilityId, int upgradeOption)
@@ -38,5 +38,5 @@ public class UpdateHandler : MonoBehaviour
 
         if (abilitySystem.ability[abilityId].upgradePath == 0) abilitySystem.ability[abilityId].upgradePath = upgradeOption;
         else abilitySystem.ability[abilityId].subUpgradePath = upgradeOption;
-    }
+    }*/
 }

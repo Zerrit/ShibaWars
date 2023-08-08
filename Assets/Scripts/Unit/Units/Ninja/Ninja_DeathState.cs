@@ -23,6 +23,12 @@ public class Ninja_DeathState : DeathState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+
+        if (Time.time > startTime + 1.5f)
+        {
+            base.LogicUpdate();
+            stateMachine.ChangeState(shibaNinja.idleState);
+        }
     }
 
     public override void PhysicsUpdate()

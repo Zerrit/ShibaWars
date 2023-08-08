@@ -14,8 +14,8 @@ public class ShibaArcher_AttackState : AttackState
     {
         base.Enter();
 
-        shibaArcher.weapon.start = shibaArcher.AttackPoint.transform.position;
-        shibaArcher.weapon.enemy = entity.enemy.transform;
+        shibaArcher.weapon.start = shibaArcher.AttackPoint.position;
+        shibaArcher.weapon.enemy = entity.enemy.SelfTransform;
     }
 
     public override void Exit()
@@ -27,25 +27,10 @@ public class ShibaArcher_AttackState : AttackState
     {
         base.LogicUpdate();
 
-        if (entity.health.currentHealth <= 0)
-        {
-            stateMachine.ChangeState(shibaArcher.deathState);
-        }
-
-        if (entity.enemy.col.enabled == false && entity.attackFinished)
+        if (entity.enemy.IsDead == true && entity.attackFinished)
         {
             stateMachine.ChangeState(shibaArcher.moveState);
         }
-        else if (entity.enemy.transform.position.x * entity.direction * -1 >= entity.transform.position.x * entity.direction * -1)
-        {
-            stateMachine.ChangeState(shibaArcher.moveState);
-        }
-        else if (entity.direction * -1 * entity.enemy.transform.position.x + entity.maxAttackRange <= entity.direction * -1 * entity.transform.position.x)
-        {
-            stateMachine.ChangeState(shibaArcher.moveState);
-        }
-        
-
     }
 
     public override void PhysicsUpdate()

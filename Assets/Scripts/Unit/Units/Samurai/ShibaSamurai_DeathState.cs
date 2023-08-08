@@ -22,7 +22,11 @@ public class ShibaSamurai_DeathState : DeathState
 
     public override void LogicUpdate()
     {
-        base.LogicUpdate();
+        if (Time.time > startTime + 1.5f)
+        {
+            base.LogicUpdate();
+            stateMachine.ChangeState(shibaSamurai.idleState);
+        }
     }
 
     public override void PhysicsUpdate()

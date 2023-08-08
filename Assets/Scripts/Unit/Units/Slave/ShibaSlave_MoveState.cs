@@ -24,7 +24,7 @@ public class ShibaSlave_MoveState : MoveState
     {
         base.LogicUpdate();
 
-        if (entity.health.currentHealth <= 0)
+/*        if (entity.health.currentHealth <= 0)
         {
             stateMachine.ChangeState(shibaSlave.deathState);
         }
@@ -50,7 +50,7 @@ public class ShibaSlave_MoveState : MoveState
         if (shibaSlave.CheckEnemyWall())
         {
             stateMachine.ChangeState(shibaSlave.idleState);
-        }
+        }*/
     }
 
     public override void PhysicsUpdate()

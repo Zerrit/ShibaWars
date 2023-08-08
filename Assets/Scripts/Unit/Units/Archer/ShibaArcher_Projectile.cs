@@ -10,6 +10,7 @@ public class ShibaArcher_Projectile : MonoBehaviour
     public Transform enemy;
     public Vector2 start;
     private Vector2 p1 ,p2, p3;
+    private float projectileHeght;
 
     public float arrowSpeed = 1f;
 
@@ -22,6 +23,7 @@ public class ShibaArcher_Projectile : MonoBehaviour
     private void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+        sr.enabled = false;
     }
 
     private void FixedUpdate()
@@ -51,13 +53,14 @@ public class ShibaArcher_Projectile : MonoBehaviour
             t += 0.045f * arrowSpeed;
         }
 
+        projectileHeght = 60 / Mathf.Abs(enemy.position.x - start.x);
         p3 = enemy.position;
         p1 = Vector2.Lerp(start, p3, 0.4f);
-        p1.y = 15f;
         p2 = Vector2.Lerp(start, p3, 0.8f);
-        p2.y = 15f;
+        p1.y = Mathf.Clamp(projectileHeght, 5, 15);
+        p2.y = Mathf.Clamp(projectileHeght, 5, 15);
         transform.position = GetPont(start, p1, p2, p3, t);
-        transform.rotation = Quaternion.LookRotation(Vector3.forward, GetDerivative(start, p1, p2, p3, t));
+        transform.rotation = Quaternion.FromToRotation(Vector3.right, GetDerivative(start, p1, p2, p3, t));
     }
 
     private Vector2 GetPont(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, float t)

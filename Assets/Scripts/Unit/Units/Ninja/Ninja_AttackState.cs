@@ -24,23 +24,7 @@ public class Ninja_AttackState : AttackState
     {
         base.LogicUpdate();
 
-        shibaNinja.SearchFragileUnits();
-
-
-        if (entity.health.currentHealth <= 0)
-        {
-            stateMachine.ChangeState(shibaNinja.deathState);
-        }
-
-        if (entity.enemy.col.enabled == false && entity.attackFinished)
-        {
-            stateMachine.ChangeState(shibaNinja.moveState);
-        }
-        else if (entity.enemy.transform.position.x * entity.direction * -1 >= entity.transform.position.x * entity.direction * -1)
-        {
-            stateMachine.ChangeState(shibaNinja.moveState);
-        }
-        else if (entity.direction * -1 * entity.enemy.transform.position.x + entity.maxAttackRange <= entity.direction * -1 * entity.transform.position.x)
+        if (entity.enemy.IsDead == true && entity.attackFinished)
         {
             stateMachine.ChangeState(shibaNinja.moveState);
         }

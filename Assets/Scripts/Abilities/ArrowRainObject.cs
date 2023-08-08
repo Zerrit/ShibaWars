@@ -11,7 +11,7 @@ public class ArrowRainObject : MonoBehaviour
     {
         if((enemyLayer | 1 << collision.gameObject.layer) == enemyLayer)
         {
-            collision.gameObject.GetComponent<Health>().GetDamage(25 * Time.deltaTime);
+            collision.gameObject.GetComponent<Entity>().GetDamage(25 * Time.deltaTime);
         }
         
     }

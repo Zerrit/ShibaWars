@@ -24,33 +24,7 @@ public class Ninja_IdleState : IdleState
     {
         base.LogicUpdate();
 
-        shibaNinja.SearchFragileUnits();
-
-        if (entity.health.currentHealth <= 0)
-        {
-            stateMachine.ChangeState(shibaNinja.deathState);
-        }
-
-        if (entity.neutralState)
-        {
-            if (entity.health.currentHealth < entity.health.maxHealth || entity.CheckEnemy(entity.entityData.checkEnemyDistance + 2f))
-            {
-                stateMachine.ChangeState(shibaNinja.moveState);
-                entity.neutralState = false;
-            }
-        }
-        else
-        {
-            if (entity.CheckEnemy(entity.entityData.checkEnemyDistance))
-            {
-                stateMachine.ChangeState(shibaNinja.attackState);
-            }
-
-            if (!entity.CheckWall())
-            {
-                stateMachine.ChangeState(shibaNinja.moveState);
-            }
-        }
+        if (Time.time >= startTime + 0.7f) stateMachine.ChangeState(shibaNinja.moveState);
     }
 
     public override void PhysicsUpdate()

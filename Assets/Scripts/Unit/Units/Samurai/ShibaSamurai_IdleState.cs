@@ -24,31 +24,7 @@ public class ShibaSamurai_IdleState : IdleState
     {
         base.LogicUpdate();
 
-        if (entity.health.currentHealth <= 0)
-        {
-            stateMachine.ChangeState(shibaSamurai.deathState);
-        }
-
-        if (entity.neutralState)
-        {
-            if (entity.health.currentHealth < entity.health.maxHealth || entity.CheckEnemy(entity.entityData.checkEnemyDistance + 2f))
-            {
-                stateMachine.ChangeState(shibaSamurai.moveState);
-                entity.neutralState = false;
-            }
-        }
-        else
-        {
-            if (entity.CheckEnemy(entity.entityData.checkEnemyDistance))
-            {
-                stateMachine.ChangeState(shibaSamurai.attackState);
-            }
-
-            if (!entity.CheckWall())
-            {
-                stateMachine.ChangeState(shibaSamurai.moveState);
-            }
-        }
+        if (Time.time >= startTime + 0.7f) stateMachine.ChangeState(shibaSamurai.moveState);
     }
 
     public override void PhysicsUpdate()

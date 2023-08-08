@@ -8,18 +8,18 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Mine
+  - 
   - Water
   - UI
-  - PlayerUnit
-  - PlayerFragileUnit
-  - PlayerTower
-  - PlayerWall
-  - 
-  - EnemyUnit
-  - EnemyFragileUnit
+  - Allies Tower
+  - Allies Unit
+  - Allies Fragile Unit
+  - Allies Barrier
   - EnemyTower
-  - EnemyWall
+  - Enemy Unit
+  - Enemy Fragile Unit
+  - Enemy Barrier
+  - 
   - 
   - 
   - 

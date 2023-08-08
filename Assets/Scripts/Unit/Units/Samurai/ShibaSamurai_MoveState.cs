@@ -24,20 +24,9 @@ public class ShibaSamurai_MoveState : MoveState
     {
         base.LogicUpdate();
 
-        if (entity.health.currentHealth <= 0)
-        {
-            stateMachine.ChangeState(shibaSamurai.deathState);
-        }
-
-        if (entity.CheckEnemy(entity.entityData.checkEnemyDistance))
-        {
-            stateMachine.ChangeState(shibaSamurai.attackState);
-        }
-
-        if (entity.CheckWall())
-        {
-            stateMachine.ChangeState(shibaSamurai.idleState);
-        }
+        if (BattleCommunicator.instance.CheckEnemyTower(shibaSamurai)) stateMachine.ChangeState(shibaSamurai.attackState);
+        if (BattleCommunicator.instance.CheckEnemy(shibaSamurai)) stateMachine.ChangeState(shibaSamurai.attackState);
+        if (BattleCommunicator.instance.CheckBarrier(shibaSamurai)) stateMachine.ChangeState(shibaSamurai.idleState);
     }
 
     public override void PhysicsUpdate()

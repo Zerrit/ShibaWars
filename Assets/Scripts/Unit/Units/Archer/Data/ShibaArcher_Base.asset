@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ShibaArcher_Base
   m_EditorClassIdentifier: 
   maxHealth: 75
-  maxAttackRange: 17
-  damage: 12
+  maxAttackRange: 20
+  damage: 20
   speed: 4
-  checkEnemyDistance: 15
+  checkEnemyDistance: 18

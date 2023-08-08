@@ -24,24 +24,9 @@ public class Ninja_MoveState : MoveState
     {
         base.LogicUpdate();
 
-        shibaNinja.SearchFragileUnits();
-
-
-
-        if (entity.health.currentHealth <= 0)
-        {
-            stateMachine.ChangeState(shibaNinja.deathState);
-        }
-
-        if (entity.CheckEnemy(entity.entityData.checkEnemyDistance))
-        {
-            stateMachine.ChangeState(shibaNinja.attackState);
-        }
-
-        if (entity.CheckWall())
-        {
-            stateMachine.ChangeState(shibaNinja.idleState);
-        }
+        if (BattleCommunicator.instance.CheckEnemyTower(shibaNinja)) stateMachine.ChangeState(shibaNinja.attackState);
+        if (BattleCommunicator.instance.CheckEnemy(shibaNinja)) stateMachine.ChangeState(shibaNinja.attackState);
+        if (BattleCommunicator.instance.CheckBarrier(shibaNinja)) stateMachine.ChangeState(shibaNinja.idleState);
     }
 
     public override void PhysicsUpdate()
