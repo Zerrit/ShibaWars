@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fe6e918f82452a43903dabc210cb206, type: 3}
+  m_Name: ShibaNinja
+  m_EditorClassIdentifier: 
+  unit: {fileID: 8491146996337192287, guid: f9f9522f2884609438b6502dd38b23cc, type: 3}
+  buttonParameters: {fileID: 11400000, guid: b1916283b18e29a409747aa9256e3e21, type: 2}

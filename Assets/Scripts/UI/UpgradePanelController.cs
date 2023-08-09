@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UpgradePanelController : MonoBehaviour
 {
-    public InterfaceManager UIManager;
+    /*public InterfaceManager UIManager;
     public UIEvents events;
 
     public Text firstPathText;
@@ -59,5 +59,5 @@ public class UpgradePanelController : MonoBehaviour
         anim.SetBool("OnView", false);
         firstPathButton.onClick.RemoveAllListeners();
         secondPathButton.onClick.RemoveAllListeners();
-    }
+    }*/
 }

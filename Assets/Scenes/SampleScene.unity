@@ -395,7 +395,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 130, y: 0}
+  m_AnchoredPosition: {x: 100, y: 0}
   m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &229124658
@@ -460,8 +460,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -598,7 +598,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 130, y: 0}
+  m_AnchoredPosition: {x: 100, y: 0}
   m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &505832247
@@ -663,8 +663,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1017,6 +1017,7 @@ GameObject:
   - component: {fileID: 785461873}
   - component: {fileID: 785461870}
   - component: {fileID: 785461872}
+  - component: {fileID: 785461874}
   m_Layer: 6
   m_Name: Main Tower
   m_TagString: Untagged
@@ -1054,16 +1055,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c43cebab360e046b14b8aecc363656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerSide: 0
   maxHealth: 250
   distance: 0
-  playerSide: 0
   healthBar: {fileID: 6396901245562761868}
-  buttonManager: {fileID: 0}
-  gold: 500
-  mana: 500
   battleUI: {fileID: 2146818864}
   unitSpawner: {fileID: 785461873}
   abilitySystem: {fileID: 785461870}
+  resourcesSystem: {fileID: 785461874}
 --- !u!114 &785461870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1104,12 +1103,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tower: {fileID: 0}
-  unitsData:
-  - unit: {fileID: 4580819185568627533, guid: d556cfe446bddcf4483e9276cda22062, type: 3}
-    buttonParameters: {fileID: 11400000, guid: 688087ceb8fb38d48ae94763b4867953, type: 2}
-  - unit: {fileID: 6031874352735993496, guid: 2ec6ff3f4281510498a4ba85a27f8f40, type: 3}
-    buttonParameters: {fileID: 11400000, guid: f754a1ed4c444a246bf10bd12417fa5a, type: 2}
+  avalaibleUnits:
+  - {fileID: 11400000, guid: 4fbdc5afd17502d4fb89a7af876c2dcc, type: 2}
+  - {fileID: 11400000, guid: 0eda139d49cc9de40bcbbd15da6b43dd, type: 2}
   unitPoolTransform: {fileID: 1604099476}
+--- !u!114 &785461874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785461862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd23839dbd971194b8a5eacce3e610b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startGold: 0
+  startEnergy: 0
 --- !u!1 &814810843
 GameObject:
   m_ObjectHideFlags: 0
@@ -2149,13 +2160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9273287d57b28b4987583c61f0ae72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerSide: 1
   maxHealth: 250
   distance: 0
-  playerSide: 1
   healthBar: {fileID: 1904977024377847604}
-  buttonManager: {fileID: 0}
-  gold: 0
-  mana: 0
   miniMap: {fileID: 1474744005}
   towerGold: 30
   towerMana: 15
@@ -2711,8 +2719,8 @@ GameObject:
   - component: {fileID: 2146818860}
   - component: {fileID: 2146818859}
   - component: {fileID: 2146818858}
-  - component: {fileID: 2146818863}
   - component: {fileID: 2146818864}
+  - component: {fileID: 2146818865}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -2808,20 +2816,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &2146818863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146818857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab6849ab502813a4b8e590d467b62ed4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  insstance: {fileID: 0}
-  playerSide: 0
 --- !u!114 &2146818864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2834,11 +2828,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e80150361cb99444af2a9063ca202f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSide: 0
   goldScore: {fileID: 229124659}
-  manaScore: {fileID: 505832248}
+  energyScore: {fileID: 505832248}
   actionButtonPanel: {fileID: 862179052}
   actionButton: {fileID: 1993765710182914168, guid: 7ae3b5f73e0f7734992cd14d95c34635, type: 3}
+--- !u!114 &2146818865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146818857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e4fbad4d87b862478ff304875fc7324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &14168898590732448
 Transform:
   m_ObjectHideFlags: 0

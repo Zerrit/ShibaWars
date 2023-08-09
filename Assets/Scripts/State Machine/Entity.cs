@@ -12,7 +12,7 @@ public enum UnitType
 
 public class Entity : MonoBehaviour, IDamageable
 {
-    public D_Entity entityData;
+    public UnitData entityData;
     public FinitStateMachine stateMachine;
 
     public Animator anim { get; private set; }

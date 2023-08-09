@@ -212,14 +212,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddcbd834bda26b3459c7cccecab15105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  economic: {fileID: 0}
-  cooldownImage: {fileID: 7524469330597516671}
-  button: {fileID: 3565330863923632216}
-  cost: {fileID: 5982030200429937169}
-  price: 0
+  buttonId: 0
+  cost: 0
   cooldown: 0
   isAbility: 0
-  onCooldown: 0
+  costText: {fileID: 5982030200429937169}
+  button: {fileID: 3565330863923632216}
+  cooldownImage: {fileID: 7524469330597516671}
 --- !u!1 &4027377941443483444
 GameObject:
   m_ObjectHideFlags: 0

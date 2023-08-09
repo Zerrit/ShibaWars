@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public struct UnitStruct 
+[CreateAssetMenu(fileName = "UnitTemplate", menuName = "Unit/UnitTemplate")]
+public class UnitTemplate : ScriptableObject
 {
     public Entity unit;
     public ButtonParameters buttonParameters;

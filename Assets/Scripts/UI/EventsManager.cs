@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class EventsManager : MonoBehaviour
 {
@@ -14,18 +10,60 @@ public class EventsManager : MonoBehaviour
     }
 
     public delegate void EventHandler(int paramValue);
-    public event EventHandler OnActionButtonClick;
-    public event EventHandler OnGoldChange;
-    public event EventHandler OnEnergyChange;
+
+    // Events нажати€ кнопок спавна юнитов и каста способностей
+    public event EventHandler OnUnitCreate, OnAbilityCast;
+
+    // Events обновлени€ UI ресурсов
+    public event EventHandler OnGoldUpdate, OnEnergyUpdate;
+
+    // Events прибавки ресурсов
+    public event EventHandler OnGoldIncrease, OnEnergyIncrease;
+
+    // Events траты ресурсов
+    public event EventHandler OnGoldReduce, OnEnergyReduce;
 
 
-    public void StartChangeGoldEvent(int value)
+
+
+
+
+    public void CreateUnut(int value)
     {
-        OnGoldChange?.Invoke(value);
+        OnUnitCreate?.Invoke(value);
+    }
+    public void CastAbility(int value)
+    {
+        OnAbilityCast?.Invoke(value);
     }
 
-    public void StartChangeEnergyEvent(int value)
+
+    public void IncreaseGold(int changeValue)
     {
-        OnEnergyChange?.Invoke(value);
+        OnGoldIncrease?.Invoke(changeValue);
+    }
+    public void IncreasesEnergy(int changeValue)
+    {
+        OnEnergyIncrease?.Invoke(changeValue);
+    }
+
+    public void ReduceGold(int changeValue)
+    {
+        OnGoldReduce?.Invoke(changeValue);
+    }
+    public void ReduceEnergy(int changeValue)
+    {
+        OnEnergyReduce?.Invoke(changeValue);
+    }
+
+
+    // ‘ункции обновлени€ UI ресурсов
+    public void UpdateGold(int goldValue)
+    {
+        OnGoldUpdate?.Invoke(goldValue);
+    }
+    public void UpdateEnergy(int energyValue)
+    {
+        OnEnergyUpdate?.Invoke(energyValue);
     }
 }

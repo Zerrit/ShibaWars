@@ -6,81 +6,67 @@ using UnityEngine;
 
 public class BattleUI : MonoBehaviour
 {
-    public PlayerSide playerSide;
+    //public PlayerSide playerSide;
 
 
     [Header("UI")]
     public TextMeshProUGUI goldScore;
-    public TextMeshProUGUI manaScore;
+    public TextMeshProUGUI energyScore;
 
     public Transform actionButtonPanel;
     public ButtonController actionButton;
 
-    //public UpgradePanelController upgradePanelController;
-    //public UIEvents events;
 
-    //public MainTower tower;
-    //public AbilitySystem abilitySystem;
-
-
-    //public ButtonController[] unitButtons;
-    //public ButtonController[] abilityButtons;
-    //public ButtonController workerButton;
-
-    private void Start()
+    private void Awake()
     {
-        //events = GetComponent<UIEvents>();
-
-        //events.playerSide = playerSide;
-       // upgradePanelController.events = events;
-
-
-/*        for (int i = 0; i < unitButtons.Length; i++)
-        {
-            unitButtons[i].buttonId = i;
-            unitButtons[i].isAbility = false;
-        }
-
-        for (int i = 0; i < abilityButtons.Length; i++)
-        {
-            abilityButtons[i].buttonId = i;
-            abilityButtons[i].isAbility = true;
-        }*/
+        EventsManager.instance.OnGoldUpdate += UpdateGoldScore;
+        EventsManager.instance.OnEnergyUpdate += UpdateEnergyScore;
     }
-
-
 
     public void InitializeUnitButtons(UnitsSpawner unitSpawner)
     {
+        if (unitSpawner.avalaibleUnits.Length == 0) return;
+
         int unitId = 0;
-        foreach (UnitStruct unit in unitSpawner.unitsData)
+        foreach (UnitTemplate unit in unitSpawner.avalaibleUnits)
         {
             ButtonController button = Instantiate(actionButton, actionButtonPanel);
             button.button.image.sprite = unit.buttonParameters.buttonIcone;
-            button.cost.text = unit.buttonParameters.cost.ToString();
             button.cooldown = unit.buttonParameters.cooldown;
-            button.price = unit.buttonParameters.cost;
-            unit.buttonParameters.id = unitId;
-
-            button.button.onClick.AddListener(() => unitSpawner.CreateUnit(unit.buttonParameters.id));
+            button.cost = unit.buttonParameters.cost;
+            button.costText.text = button.cost.ToString();
+            button.buttonId = unitId;
+            button.isAbility = false;
             unitId++;
+
         }
     }
 
     public void InitializeAbilityButtons(AbilitySystem abilitySystem)
     {
+        if (abilitySystem.abilities.Length == 0) return;
+
         int abilityId = 0;
         foreach (Ability ability in abilitySystem.abilities)
         {
             ButtonController button = Instantiate(actionButton, actionButtonPanel);
             button.button.image.sprite = ability.buttonParameters.buttonIcone;
-            button.cost.text = ability.buttonParameters.cost.ToString();
             button.cooldown = ability.buttonParameters.cooldown;
-            button.price = ability.buttonParameters.cost;
-            ability.buttonParameters.id = abilityId;
-
-            button.button.onClick.AddListener(() => abilitySystem.ActiveAbility(ability.buttonParameters.id));
+            button.cost = ability.buttonParameters.cost;
+            button.costText.text = button.cost.ToString();
+            button.buttonId = abilityId;
             abilityId++;
+            button.isAbility = true;
         }
+    }
+
+    private void UpdateGoldScore(int value)
+    {
+        goldScore.text = value.ToString();
+    }
+
+    private void UpdateEnergyScore(int value)
+    {
+        energyScore.text = value.ToString();
     }
 }

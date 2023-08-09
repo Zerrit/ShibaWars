@@ -3,24 +3,31 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ButtonController : MonoBehaviour
-{ 
-    public PlayerTower economic;
-    public Image cooldownImage;
+{
+    [Header("Данные для автозаполнения")]
+    public int buttonId;
+    public int cost;
+    public int cooldown;
+    public bool isAbility;
+    public TextMeshProUGUI costText;
     public Button button;
 
-    [Header("Данные для автозаполнения")]
-    public TextMeshProUGUI cost;
-    public int price;
-    public int cooldown;
+    public Image cooldownImage;
 
-    public bool isAbility;
-    public bool onCooldown;
+    private bool onCooldown;
+    private float timer;
 
-    public float timer;
+    private void Awake()
+    {
+        button.onClick.AddListener(PressButton);
+
+        if (isAbility) EventsManager.instance.OnEnergyUpdate += CheckEccess;
+        else EventsManager.instance.OnGoldUpdate += CheckEccess;
+    }
+
 
     public void Update()
     {
-        //CheckEccess();
         Cooldown();
     }
 
@@ -40,9 +47,18 @@ public class ButtonController : MonoBehaviour
         cooldownImage.fillAmount = (onCooldown) ? (timer / cooldown) : 0;
     }
 
-/*    private void CheckEccess()
+    private void CheckEccess(int value)
     {
-        if (isAbility) button.interactable = (economic.mana >= cost && !onCooldown) ? true : false;
-        else button.interactable = (economic.gold >= cost && !onCooldown) ? true : false;
-    }*/
+        button.interactable = (value >= cost && !onCooldown) ? true : false;
+    }
+
+    private void PressButton()
+    {
+        StartCooldown();
+
+        if (isAbility) EventsManager.instance.CastAbility(buttonId);
+        else EventsManager.instance.CreateUnut(buttonId);
+
+        EventsManager.instance.ReduceGold(cost);
+    }
 }

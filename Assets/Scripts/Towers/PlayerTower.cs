@@ -8,11 +8,9 @@ public class PlayerTower : MainTower
 {
     public BattleUI battleUI;
 
-    [Header("OtherParameters")]
-    //private int passiveIncomingTime = 0;
-
     public UnitsSpawner unitSpawner;
     public AbilitySystem abilitySystem;
+    public ResourcesSystem resourcesSystem;
 
     public override void Start()
     {
@@ -20,13 +18,6 @@ public class PlayerTower : MainTower
 
         battleUI.InitializeUnitButtons(unitSpawner);
         battleUI.InitializeAbilityButtons(abilitySystem);
+        resourcesSystem.Init();
     }
-
-    public void Update()
-    {
-        //PassiveIncoming();
-    }
-
-
-
 }

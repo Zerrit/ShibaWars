@@ -1,60 +1,61 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ResourcesSystem : MonoBehaviour
 {
+    public int startGold, startEnergy;
+
     public int Gold { get; private set; }
     public int Energy { get; private set; }
 
     private float lastIncomingTime = 0;
     private void Awake()
     {
-        EventsManager.instance.OnGoldChange += IncreaseGold;
-        //EventsManager.instance.OnEnergyChange += IncreaseEnergy;
+        EventsManager.instance.OnGoldIncrease += IncreaseGold;
+        EventsManager.instance.OnEnergyIncrease += IncreaseEnergy;
+        EventsManager.instance.OnGoldReduce += SpendGold;
+        EventsManager.instance.OnEnergyReduce += SpendEnergy;
     }
 
+    private void Update()
+    {
+        PassiveIncoming();
+    }
 
-    public void Init(int startGold, int startEnergy)
+    public void Init()
     {
         Gold = startGold; 
         Energy = startEnergy;
+        EventsManager.instance.UpdateGold(Gold);
     }
 
-    public bool SpentGold(int cost)
+    public void SpendGold(int cost)
     {
-        if (Gold >= cost)
-        {
-            Gold -= cost;
-            return true;
-        }
-        else return false;
-
+        Gold -= cost;
+        EventsManager.instance.UpdateGold(Gold);
     }
-    public bool SpendEnergy(int cost)
+    public void SpendEnergy(int cost)
     {
-        if (Energy >= cost)
-        {
-            Energy -= cost;
-            return true;
-        }
-        else return false;
+        Energy -= cost;
+        EventsManager.instance.UpdateEnergy(Energy);
     }
 
     public void IncreaseGold(int amount)
     {
         Gold += amount;
+        EventsManager.instance.UpdateGold(Gold);
     }
     public void IncreaseEnergy(int amount)
     {
         Energy += amount;
+        EventsManager.instance.UpdateEnergy(Energy);
     }
 
     private void PassiveIncoming()
     {
-        if(Time.time > lastIncomingTime + 3.0f)
+        if(Time.time >= lastIncomingTime + 1.0f)
         {
-            EventsManager.instance.StartChangeGoldEvent(35);
+            EventsManager.instance.IncreaseGold(10);
+            lastIncomingTime = Time.time;
         }
     }
 }

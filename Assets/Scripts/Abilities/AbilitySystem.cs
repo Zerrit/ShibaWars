@@ -8,7 +8,7 @@ public  class AbilitySystem : MonoBehaviour
 
     [Header("Abilities")]
     [SerializeField]
-    public List<Ability> abilities;
+    public Ability[] abilities;
 
     private bool isAbilityChosen = false;
     private int chosenAbility;
@@ -25,7 +25,7 @@ public  class AbilitySystem : MonoBehaviour
             if(abilities[chosenAbility].UseAbility(Input.mousePosition))
             {
                 //abilities[chosenAbility].button.StartCooldown();
-                tower.PayMana(abilities[chosenAbility].buttonParameters.cost);
+                //tower.PayMana(abilities[chosenAbility].buttonParameters.cost);
                 chosenAbility = -1;
             }      
         } 

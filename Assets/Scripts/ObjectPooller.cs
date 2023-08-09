@@ -64,7 +64,7 @@ public class ObjectPooller<T> where T : MonoBehaviour
     {
         if (HasFreeElement(out var element)) return element;
 
-        if (autoExpend) CreateObject();
+        if (autoExpend) return CreateObject();
 
         throw new System.Exception(message:$"В пуле нет свободных элементов {typeof(T)}");
     }

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "newEntityData", menuName = "Data/Base Data")]
-public class D_Entity : ScriptableObject
+[CreateAssetMenu(fileName = "newUnitData", menuName = "Unit/Unit Parameters")]
+public class UnitData : ScriptableObject
 {
     [Header("Health")]
     public int maxHealth = 100;
