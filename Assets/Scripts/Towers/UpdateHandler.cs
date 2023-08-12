@@ -5,12 +5,12 @@ using UnityEngine;
 public class UpdateHandler : MonoBehaviour
 {
     private UnitsSpawner unitSpawner;
-    private AbilitySystem abilitySystem;
+    private AbilityCaster abilitySystem;
 
     private void Start()
     {
         //unitSpawner = GetComponent<UnitsSpawner>();
-        abilitySystem = GetComponent<AbilitySystem>();
+        abilitySystem = GetComponent<AbilityCaster>();
     }
 /*
     private void OnEnable()

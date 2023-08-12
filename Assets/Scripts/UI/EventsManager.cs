@@ -12,7 +12,7 @@ public class EventsManager : MonoBehaviour
     public delegate void EventHandler(int paramValue);
 
     // Events нажатия кнопок спавна юнитов и каста способностей
-    public event EventHandler OnUnitCreate, OnAbilityCast;
+    public event EventHandler OnUnitCreate, OnAbilitySelect, OnAbilityCast;
 
     // Events обновления UI ресурсов
     public event EventHandler OnGoldUpdate, OnEnergyUpdate;
@@ -35,6 +35,10 @@ public class EventsManager : MonoBehaviour
     public void CastAbility(int value)
     {
         OnAbilityCast?.Invoke(value);
+    }
+    public void SelectAbility(int abilityId)
+    {
+        OnAbilitySelect?.Invoke(abilityId);
     }
 
 

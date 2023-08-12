@@ -228,8 +228,15 @@ namespace PathCreation {
 
         /// Finds the closest point on the path from any point in the world
         public Vector3 GetClosestPointOnPath (Vector3 worldPoint) {
-            TimeOnPathData data = CalculateClosestPointOnPathData (worldPoint);
+            TimeOnPathData data = CalculateClosestPointOnPathData(worldPoint);
             return Vector3.Lerp (GetPoint (data.previousIndex), GetPoint (data.nextIndex), data.percentBetweenIndices);
+        }
+
+        /// Finds the closest point on the path by x coordinat from any point in the world
+        public Vector3 GetClosestPointOnPathByX(Vector3 worldPoint)
+        {
+            TimeOnPathData data = CalculateClosestPointOnPathByX(worldPoint);
+            return Vector3.Lerp(GetPoint(data.previousIndex), GetPoint(data.nextIndex), data.percentBetweenIndices);
         }
 
         public Vector3 GetCustomPointOnPath(Vector3 worldPoint)
@@ -332,6 +339,46 @@ namespace PathCreation {
             float t = (closestPoint - GetPoint (closestSegmentIndexA)).magnitude / closestSegmentLength;
             return new TimeOnPathData (closestSegmentIndexA, closestSegmentIndexB, t);
         }
+
+        /// Calculate time data for closest point on the path by x coordinat from given world point
+        TimeOnPathData CalculateClosestPointOnPathByX(Vector3 worldPoint)
+        {
+            float minSqrDst = float.MaxValue;
+            Vector3 closestPoint = Vector3.zero;
+            int closestSegmentIndexA = 0;
+            int closestSegmentIndexB = 0;
+
+            for (int i = 0; i < localPoints.Length; i++)
+            {
+                int nextI = i + 1;
+                if (nextI >= localPoints.Length)
+                {
+                    if (isClosedLoop)
+                    {
+                        nextI %= localPoints.Length;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                Vector3 closestPointOnSegment = MathUtility.ClosestPointOnLineSegment(new Vector2(worldPoint.x, GetPoint(nextI).y) , GetPoint(i), GetPoint(nextI));
+                float sqrDst = (new Vector3(worldPoint.x, closestPointOnSegment.y, 0) - closestPointOnSegment).sqrMagnitude;
+                if (sqrDst < minSqrDst)
+                {
+                    minSqrDst = sqrDst;
+                    closestPoint = closestPointOnSegment;
+                    closestSegmentIndexA = i;
+                    closestSegmentIndexB = nextI;
+                }
+
+            }
+            float closestSegmentLength = (GetPoint(closestSegmentIndexA) - GetPoint(closestSegmentIndexB)).magnitude;
+            float t = (closestPoint - GetPoint(closestSegmentIndexA)).magnitude / closestSegmentLength;
+            return new TimeOnPathData(closestSegmentIndexA, closestSegmentIndexB, t);
+        }
+
 
         TimeOnPathData CalculateCustomPointOnPathData(Vector3 worldPoint)
         {

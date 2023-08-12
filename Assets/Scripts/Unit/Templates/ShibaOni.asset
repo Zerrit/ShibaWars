@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fe6e918f82452a43903dabc210cb206, type: 3}
   m_Name: ShibaOni
   m_EditorClassIdentifier: 
-  unit: {fileID: 2366758403908094399, guid: 27ef443994a5494459fbbe29370def5a, type: 3}
+  unit: {fileID: 360575903127320127, guid: 27ef443994a5494459fbbe29370def5a, type: 3}
   buttonParameters: {fileID: 11400000, guid: 8eff42dffb3d52f46b6b11d60a003034, type: 2}

@@ -21,12 +21,12 @@ public class State
     public virtual void Enter()
     {
         startTime = Time.time;
-        entity.anim.SetBool(animBoolName,true); 
+        entity.animator.SetBool(animBoolName,true); 
     }   
 
     public virtual void Exit()
     {
-        entity.anim.SetBool(animBoolName, false);
+        entity.animator.SetBool(animBoolName, false);
     }
 
     public virtual void LogicUpdate()

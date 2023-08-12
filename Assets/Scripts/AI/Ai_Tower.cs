@@ -54,7 +54,7 @@ public class Ai_Tower : MainTower
     public void CreateShibaSamurai()
     {
         Entity unit = samuraiPool.GetFreeElement();
-        //Instantiate(spawnVFX, unit.SelfTransform);
+        Instantiate(spawnVFX, unit.SelfTransform);
         BattleCommunicator.instance.AddUnit(unit);
 
         //miniMap.AddNewIcon(unit);

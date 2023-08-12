@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class ArrowRainObject : MonoBehaviour
 {
-    public LayerMask enemyLayer;
-    public int damage; 
+    public int damage;
+    private float lastDamageTime = 0;
+    List<IDamageable> allTargets = new List<IDamageable>();
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void Update()
     {
-        if((enemyLayer | 1 << collision.gameObject.layer) == enemyLayer)
-        {
-            collision.gameObject.GetComponent<Entity>().GetDamage(25 * Time.deltaTime);
-        }
-        
+        DamageAllTargers();
+        Destroy(gameObject, 4f);
     }
+
+
+    private void DamageAllTargers()
+    {
+        if(Time.time >= lastDamageTime + 0.25f)
+        {
+            allTargets = BattleCommunicator.instance.CheckUnitsAround((Vector2)transform.position);
+
+            foreach(IDamageable target in allTargets)
+            {
+                target.GetDamage(5);
+                lastDamageTime = Time.time;
+            }
+        }
+    }
+
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,6 @@ public class ButtonController : MonoBehaviour
     public int buttonId;
     public int cost;
     public int cooldown;
-    public bool isAbility;
     public TextMeshProUGUI costText;
     public Button button;
 
@@ -17,12 +17,10 @@ public class ButtonController : MonoBehaviour
     private bool onCooldown;
     private float timer;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         button.onClick.AddListener(PressButton);
-
-        if (isAbility) EventsManager.instance.OnEnergyUpdate += CheckEccess;
-        else EventsManager.instance.OnGoldUpdate += CheckEccess;
+        StartCoroutine(SubscribeEvent());
     }
 
 
@@ -41,24 +39,24 @@ public class ButtonController : MonoBehaviour
 
     private void Cooldown()
     {
-        if (timer < 0) onCooldown = false;
-        if (onCooldown) timer -= Time.deltaTime;
+        if (!onCooldown) return;
 
+        timer -= Time.deltaTime;
+        if (timer <= 0) onCooldown = false;
         cooldownImage.fillAmount = (onCooldown) ? (timer / cooldown) : 0;
     }
 
-    private void CheckEccess(int value)
+    protected void CheckEccess(int value)
     {
         button.interactable = (value >= cost && !onCooldown) ? true : false;
     }
 
-    private void PressButton()
+    protected virtual void PressButton()
     {
-        StartCooldown();
 
-        if (isAbility) EventsManager.instance.CastAbility(buttonId);
-        else EventsManager.instance.CreateUnut(buttonId);
-
-        EventsManager.instance.ReduceGold(cost);
+    }
+    protected virtual IEnumerator SubscribeEvent()
+    {
+        yield return new WaitUntil(() => EventsManager.instance != null);
     }
 }

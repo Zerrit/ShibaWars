@@ -252,12 +252,10 @@ MonoBehaviour:
   entityData: {fileID: 11400000, guid: 35d4f9d3b2401a2408b770ce38ac17e0, type: 2}
   childGO: {fileID: 0}
   HealthBar: {fileID: 0}
-  pathLine: {fileID: 0}
   unitType: 4
   neutralState: 0
   distance: 0
   startPosition: 0
-  pathLength: 0
   attackFinished: 0
   direction: 1
   Ypos: 0

@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ab8be62892419d48879846e7f62fe77, type: 3}
-  m_Name: Barricade
+  m_Script: {fileID: 11500000, guid: 2bc2315b87b305f47a7940c5081d01b6, type: 3}
+  m_Name: ArrowRain
   m_EditorClassIdentifier: 
-  buttonName: Barricade
-  buttonIcone: {fileID: -6189617579038136581, guid: 01ad5d8432c147d46bce6d6ca5539755, type: 3}
-  cooldown: 10
-  cost: 20
-  statsUpgrade: 
-  specialUpgrade: 
+  buttonParameters: {fileID: 11400000, guid: 4fe2c411b0ee49e44995d451b45c3246, type: 2}
+  arrowRain: {fileID: 4431373831006516670, guid: 79a17680bd9789d4f8e436f4fa3a8932, type: 3}
+  damage: 0

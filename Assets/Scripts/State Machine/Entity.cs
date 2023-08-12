@@ -15,9 +15,10 @@ public class Entity : MonoBehaviour, IDamageable
     public UnitData entityData;
     public FinitStateMachine stateMachine;
 
-    public Animator anim { get; private set; }
-    public Transform childGO;
-    public SortingGroup sg { get; private set; }
+    public Animator animator { get; private set; }
+    public Transform childGO { get; private set; }
+    public SortingGroup sortingGroup { get; private set; }
+    public EffectsComponent FXComponent { get; private set; }
 
     public Transform HealthBar;
 
@@ -47,8 +48,9 @@ public class Entity : MonoBehaviour, IDamageable
     public virtual void Awake()
     {
         stateMachine = new FinitStateMachine();
-        anim = gameObject.GetComponent<Animator>();
-        sg = gameObject.GetComponent<SortingGroup>();
+        animator = gameObject.GetComponent<Animator>();
+        sortingGroup = gameObject.GetComponent<SortingGroup>();
+        FXComponent = gameObject.GetComponent<EffectsComponent>();
         childGO = transform.GetChild(0);
         Ypos = childGO.localPosition.y;
         SelfTransform = transform;
@@ -96,7 +98,7 @@ public class Entity : MonoBehaviour, IDamageable
         distance += direction * speed * Time.deltaTime;
         float t = 0.5f * Time.deltaTime;
         float offset = 0.25f * heightIndex;
-        sg.sortingOrder = 5 - heightIndex;
+        sortingGroup.sortingOrder = 5 - heightIndex;
 
         SetPositionByDistance();
 
@@ -123,7 +125,8 @@ public class Entity : MonoBehaviour, IDamageable
 
     public virtual void Attack()
     {
-
+        FXComponent.SetFXPosition(enemy.SelfTransform.position);
+        FXComponent.PlayAttackFX();
     }
 
 

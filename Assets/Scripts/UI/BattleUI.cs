@@ -14,13 +14,18 @@ public class BattleUI : MonoBehaviour
     public TextMeshProUGUI energyScore;
 
     public Transform actionButtonPanel;
-    public ButtonController actionButton;
+    public ButtonController unitButton;
+    public ButtonController abilityButton;
 
 
-    private void Awake()
+    private void OnEnable()
     {
-        EventsManager.instance.OnGoldUpdate += UpdateGoldScore;
-        EventsManager.instance.OnEnergyUpdate += UpdateEnergyScore;
+        StartCoroutine(SubscribeEvent());
+    }
+    private void OnDisable()
+    {
+        EventsManager.instance.OnGoldUpdate -= UpdateGoldScore;
+        EventsManager.instance.OnEnergyUpdate -= UpdateEnergyScore;
     }
 
     public void InitializeUnitButtons(UnitsSpawner unitSpawner)
@@ -30,43 +35,50 @@ public class BattleUI : MonoBehaviour
         int unitId = 0;
         foreach (UnitTemplate unit in unitSpawner.avalaibleUnits)
         {
-            ButtonController button = Instantiate(actionButton, actionButtonPanel);
+            ButtonController button = Instantiate(unitButton, actionButtonPanel);
             button.button.image.sprite = unit.buttonParameters.buttonIcone;
             button.cooldown = unit.buttonParameters.cooldown;
             button.cost = unit.buttonParameters.cost;
             button.costText.text = button.cost.ToString();
             button.buttonId = unitId;
-            button.isAbility = false;
             unitId++;
 
         }
     }
-
-    public void InitializeAbilityButtons(AbilitySystem abilitySystem)
+    public void InitializeAbilityButtons(AbilityCaster abilityCaster)
     {
-        if (abilitySystem.abilities.Length == 0) return;
+        if (abilityCaster.abilities.Length == 0) return;
 
         int abilityId = 0;
-        foreach (Ability ability in abilitySystem.abilities)
+        foreach (Ability ability in abilityCaster.abilities)
         {
-            ButtonController button = Instantiate(actionButton, actionButtonPanel);
+            ButtonController button = Instantiate(abilityButton, actionButtonPanel);
             button.button.image.sprite = ability.buttonParameters.buttonIcone;
             button.cooldown = ability.buttonParameters.cooldown;
             button.cost = ability.buttonParameters.cost;
             button.costText.text = button.cost.ToString();
             button.buttonId = abilityId;
             abilityId++;
-            button.isAbility = true;
         }
     }
+
 
     private void UpdateGoldScore(int value)
     {
         goldScore.text = value.ToString();
     }
-
     private void UpdateEnergyScore(int value)
     {
         energyScore.text = value.ToString();
     }
+
+
+    private IEnumerator SubscribeEvent()
+    {
+        yield return new WaitUntil(() => EventsManager.instance != null);
+
+        EventsManager.instance.OnGoldUpdate += UpdateGoldScore;
+        EventsManager.instance.OnEnergyUpdate += UpdateEnergyScore;
+    }
+
 }

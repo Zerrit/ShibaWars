@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ShibaSamurai_Base
   m_EditorClassIdentifier: 
   maxHealth: 100
-  maxAttackRange: 6
+  maxAttackRange: 7
   damage: 25
   speed: 5
-  checkEnemyDistance: 4
+  checkEnemyDistance: 6

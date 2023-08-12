@@ -9,7 +9,7 @@ public class PlayerTower : MainTower
     public BattleUI battleUI;
 
     public UnitsSpawner unitSpawner;
-    public AbilitySystem abilitySystem;
+    public AbilityCaster abilityCaster;
     public ResourcesSystem resourcesSystem;
 
     public override void Start()
@@ -17,7 +17,7 @@ public class PlayerTower : MainTower
         base.Start();
 
         battleUI.InitializeUnitButtons(unitSpawner);
-        battleUI.InitializeAbilityButtons(abilitySystem);
+        battleUI.InitializeAbilityButtons(abilityCaster);
         resourcesSystem.Init();
     }
 }

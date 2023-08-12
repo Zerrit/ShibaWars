@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ResourcesSystem : MonoBehaviour
@@ -8,12 +9,17 @@ public class ResourcesSystem : MonoBehaviour
     public int Energy { get; private set; }
 
     private float lastIncomingTime = 0;
-    private void Awake()
+    private void OnEnable()
     {
-        EventsManager.instance.OnGoldIncrease += IncreaseGold;
-        EventsManager.instance.OnEnergyIncrease += IncreaseEnergy;
-        EventsManager.instance.OnGoldReduce += SpendGold;
-        EventsManager.instance.OnEnergyReduce += SpendEnergy;
+        StartCoroutine(SubscribeEvent());
+
+    }
+    private void OnDisable()
+    {
+        EventsManager.instance.OnGoldIncrease -= IncreaseGold;
+        EventsManager.instance.OnEnergyIncrease -= IncreaseEnergy;
+        EventsManager.instance.OnGoldReduce -= SpendGold;
+        EventsManager.instance.OnEnergyReduce -= SpendEnergy;
     }
 
     private void Update()
@@ -55,7 +61,18 @@ public class ResourcesSystem : MonoBehaviour
         if(Time.time >= lastIncomingTime + 1.0f)
         {
             EventsManager.instance.IncreaseGold(10);
+            EventsManager.instance.IncreasesEnergy(5);
             lastIncomingTime = Time.time;
         }
+    }
+
+
+    private IEnumerator SubscribeEvent()
+    {
+        yield return new WaitUntil(() => EventsManager.instance != null);
+        EventsManager.instance.OnGoldIncrease += IncreaseGold;
+        EventsManager.instance.OnEnergyIncrease += IncreaseEnergy;
+        EventsManager.instance.OnGoldReduce += SpendGold;
+        EventsManager.instance.OnEnergyReduce += SpendEnergy;
     }
 }

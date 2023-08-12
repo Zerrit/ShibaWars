@@ -15,6 +15,9 @@ public class BattleCommunicator : MonoBehaviour
     public MainTower leftPlayerTower;
     public MainTower rightPlayerTower;
 
+    private Barricade leftPlayerBarricade;
+    private Barricade rightPlayerBarricade;
+
     public List<Entity> leftPlayerUnits = new List<Entity>();
     public List<Entity> rightPlayerUnits = new List<Entity>();
 
@@ -61,7 +64,7 @@ public class BattleCommunicator : MonoBehaviour
             }
             else return false;
         }
-    }
+    } // ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ÂĞÀÃÀ Â ĞÀÄÈÓÑÅ ÎÁÍÀĞÓÆÅÍÈß
     public void CheckAllies(Entity checkingUnit)
     {
         if (checkingUnit.direction > 0)
@@ -96,7 +99,7 @@ public class BattleCommunicator : MonoBehaviour
                 }
             }
         }
-    }
+    } // ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ÑÎŞÇÍÈÊÎÂ Â ĞÀÄÈÓÑÅ ÏÅĞÅÑÒĞÎÅÍÈß
     public bool CheckEnemyTower(Entity checkingUnit)
     {
         if (checkingUnit.direction > 0)
@@ -117,8 +120,8 @@ public class BattleCommunicator : MonoBehaviour
             }
             else return false;
         }
-    }
-    public bool CheckBarrier(Entity chekingUnit)
+    } // ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ÂĞÀÆÅÑÊÎÃÎ ÃËÀÂÍÎÃÎ ÇÄÀÍÈß Â ĞÀÄÈÓÑÅ ÎÁÍÀĞÓÆÅÍÈß
+    public bool CheckBarrier(Entity chekingUnit) //ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ÁÀĞÈÊÀÄÛ
     {
         return false;
     }
@@ -151,6 +154,50 @@ public class BattleCommunicator : MonoBehaviour
             return enemies;
         }
     }
+    public List<IDamageable> CheckUnitsAround(Vector2 touchPosition)
+    {
+        List<IDamageable> enemies = new List<IDamageable>();
+        Vector2 touchPos = pathLine.path.GetClosestPointOnPathByX(touchPosition);
+
+        foreach (Entity unit in leftPlayerUnits)
+        {
+            if (Mathf.Abs(unit.SelfTransform.position.x - touchPos.x) < 5f)
+            {
+                enemies.Add(unit);
+            }
+            else continue;
+        }
+        foreach (Entity unit in rightPlayerUnits)
+        {
+            if (Mathf.Abs(unit.SelfTransform.position.x - touchPos.x) < 5f)
+            {
+                enemies.Add(unit);
+            }
+            else continue;
+        }
+
+        return enemies;
+
+    }
+    public bool CheckAnyAround(Vector2 touchPosition)
+    {
+        Vector2 touchPos = pathLine.path.GetClosestPointOnPathByX(touchPosition);
+        foreach (Entity unit in leftPlayerUnits)
+        {
+            if (Mathf.Abs(unit.SelfTransform.position.x - touchPos.x) < 5f) return false;
+        }
+
+        foreach (Entity unit in rightPlayerUnits)
+        {
+            if (Mathf.Abs(unit.SelfTransform.position.x - touchPos.x) < 5f) return false;
+        }
+
+        if (Mathf.Abs(leftPlayerTower.SelfTransform.position.x - touchPos.x) < 5f) return false;
+        if (Mathf.Abs(rightPlayerTower.SelfTransform.position.x - touchPos.x) < 5f) return false;
+
+        return true;
+    }
+
 
     public Vector2 GetPositionByDistance(float distance)
     {
@@ -163,7 +210,7 @@ public class BattleCommunicator : MonoBehaviour
     }
     public Vector2 GetPositionByX(Vector2 touchPos)
     {
-        return pathLine.path.GetCustomPointOnPath(touchPos);
+        return pathLine.path.GetClosestPointOnPathByX(touchPos);
     }
 
     public void AddUnit(Entity unit)
@@ -244,4 +291,6 @@ public class BattleCommunicator : MonoBehaviour
         list[end] = temp;
         return marker;
     }
+
+
 }

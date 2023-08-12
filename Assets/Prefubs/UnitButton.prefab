@@ -71,8 +71,8 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 0
+  m_FillAmount: 0
+  m_FillClockwise: 1
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
@@ -88,9 +88,9 @@ GameObject:
   - component: {fileID: 7171875495700065873}
   - component: {fileID: 6630116467174301744}
   - component: {fileID: 3565330863923632216}
-  - component: {fileID: 1993765710182914168}
+  - component: {fileID: 6141102142515154668}
   m_Layer: 5
-  m_Name: ActionButton
+  m_Name: UnitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1993765710182914168
+--- !u!114 &6141102142515154668
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,13 +209,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3460266359344041060}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddcbd834bda26b3459c7cccecab15105, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d382e0f20fab4346ae39386948bd8dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buttonId: 0
   cost: 0
   cooldown: 0
-  isAbility: 0
   costText: {fileID: 5982030200429937169}
   button: {fileID: 3565330863923632216}
   cooldownImage: {fileID: 7524469330597516671}

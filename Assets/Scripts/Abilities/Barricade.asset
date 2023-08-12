@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Barricade
   m_EditorClassIdentifier: 
   buttonParameters: {fileID: 11400000, guid: 701b387b3ffc5b647b54b34b8796efe1, type: 2}
-  barricade: {fileID: 4563739903199854452, guid: 2f10bc7c315a473439d6a686abe8a403, type: 3}
+  barricade: {fileID: 393501568596527485, guid: 2f10bc7c315a473439d6a686abe8a403, type: 3}

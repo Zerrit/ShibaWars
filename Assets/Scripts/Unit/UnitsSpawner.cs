@@ -1,20 +1,24 @@
-using PathCreation;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class UnitsSpawner: MonoBehaviour
 {
-    public MainTower tower;
     public UnitTemplate[] avalaibleUnits;
 
     public Transform unitPoolTransform;
 
+    private void OnEnable()
+    {
+        StartCoroutine(SubscribeEvent());
+    }
+    private void OnDisable()
+    {
+        EventsManager.instance.OnUnitCreate -= CreateUnit;
+    }
+
     private void Start()
     {
         InitUnitPools();
-        EventsManager.instance.OnUnitCreate += CreateUnit;
     }
 
     private void InitUnitPools()
@@ -29,5 +33,14 @@ public class UnitsSpawner: MonoBehaviour
     {
         Entity unit = avalaibleUnits[unitNumber].pool.GetFreeElement();
         BattleCommunicator.instance.AddUnit(unit);
+    }
+
+
+
+
+    private IEnumerator SubscribeEvent()
+    {
+        yield return new WaitUntil(() => EventsManager.instance != null);
+        EventsManager.instance.OnUnitCreate += CreateUnit;
     }
 }
