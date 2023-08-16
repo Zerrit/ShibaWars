@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ab8be62892419d48879846e7f62fe77, type: 3}
   m_Name: ShibaSlave
   m_EditorClassIdentifier: 
-  buttonName: Slave
+  buttonName: Worker
   buttonIcone: {fileID: -1030535120554673623, guid: 01ad5d8432c147d46bce6d6ca5539755, type: 3}
-  cooldown: 3
-  cost: 30
-  statsUpgrade: 
-  specialUpgrade: 
+  cooldown: 10
+  cost: 100

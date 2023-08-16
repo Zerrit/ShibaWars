@@ -4,50 +4,53 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Mine : MonoBehaviour
+public class Mine : MonoBehaviour, IDamageable
 {
-    public int amountIncome = 50;
-    public int amountWorkers = 0;
-    public int maxWorkerCount = 3;
-    public Button button;
 
+    public int maxHealth = 250;
+    public float distance;
+    public Transform healthBar;
+
+
+
+    public float MaxHealth { get; set; }
+    public float CurrentHealth { get; set; }
+    public Transform SelfTransform { get; set; }
+    public bool IsDead { get; set; }
+
+    public PlayerSide playerSide;
 
     private void Start()
     {
-        button.onClick.AddListener(AddWorker);
+        MaxHealth = maxHealth;
+        SelfTransform = transform;
+
+        if (!IsDead)
+        {
+            CurrentHealth = MaxHealth;
+            EventsManager.instance.TakeMine();
+        }
     }
 
-    public void AddWorker()
+
+
+
+
+
+    public void GetDamage(float damage)
     {
-        if(amountWorkers < maxWorkerCount) amountWorkers++;
+        if (IsDead != true)
+        {
+            Mathf.Clamp(CurrentHealth -= damage, 0, MaxHealth);
+            healthBar.localScale = new Vector2(Mathf.Clamp01(CurrentHealth / MaxHealth), 1f);
+
+            if (CurrentHealth <= 0) KillSelf();
+        }
     }
 
-
-    private void OnMouseDown()
+    public void KillSelf()
     {
-        //ShowButton();
+        IsDead = true;
+        EventsManager.instance.LostMine();
     }
-
-/*    private void ShowButton()
-    {
-        button.gameObject.SetActive(true);
-    }
-
-    private void HideButton()
-    {
-        button.gameObject.SetActive(false);
-    }*/
-
-/*    public void OnPointerDown(PointerEventData eventData)
-    {
-        if(eventData.lastPress != this.gameObject) HideButton();
-    }
-
-    private void OnMouseDown()
-           Vector3 mousePosition = Input.mousePosition;
-    Vector3 buttonPosition = Camera.main.WorldToScreenPoint(transform.position);
-        
-        if (Vector2.Distance(mousePosition, buttonPosition) > someThreshold)
-                   isVisible = false;
-            gameObject.SetActive(false);*/
 }

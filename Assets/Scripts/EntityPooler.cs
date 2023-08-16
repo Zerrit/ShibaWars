@@ -5,12 +5,10 @@ using UnityEngine;
 
 public class EntityPooler : ObjectPooller<Entity>
 {
-    //private PathCreator pathLine;
     private bool isRightSidePlayer;
 
-    public EntityPooler(Entity prefab, Transform container, int count, bool isRightSidePlayer = false) : base(prefab, container)
+    public EntityPooler(Entity prefab, Transform container, int count, bool isRightSidePlayer = false, bool isAutoExpand = true) : base(prefab, container, isAutoExpand)
     {
-        //this.pathLine = pathLine;
         this.isRightSidePlayer = isRightSidePlayer;
 
         CreatePool(count);

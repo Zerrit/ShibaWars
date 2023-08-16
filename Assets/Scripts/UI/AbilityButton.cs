@@ -8,6 +8,14 @@ public class AbilityButton : ButtonController
     public ParticleSystem selectedFX;
 
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        EventsManager.instance.OnEnergyUpdate += CheckEccess;
+        EventsManager.instance.OnAbilitySelect += SwitchSelectMode;
+        EventsManager.instance.OnAbilityCast += ApplyAbility;
+    }
+
     protected override void PressButton()
     {
         EventsManager.instance.SelectAbility(buttonId);
@@ -38,14 +46,5 @@ public class AbilityButton : ButtonController
             }
             else return;
         }
-    }
-
-    protected override IEnumerator SubscribeEvent()
-    {
-        yield return new WaitUntil(() => EventsManager.instance != null);
-
-        EventsManager.instance.OnEnergyUpdate += CheckEccess;
-        EventsManager.instance.OnAbilitySelect += SwitchSelectMode;
-        EventsManager.instance.OnAbilityCast += ApplyAbility;
     }
 }

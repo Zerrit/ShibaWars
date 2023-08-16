@@ -1,15 +1,27 @@
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
-public class EventsManager : MonoBehaviour
+public class EventsManager
 {
+    [SerializeField]
     public static EventsManager instance;
 
-    private void Awake()
+    public EventsManager()
     {
         instance = this;
     }
 
+    public delegate void EmptyEventHandler();
     public delegate void EventHandler(int paramValue);
+    public delegate void DoubleParamsEventHandler(int firstParam, int secondParam);
+    public delegate void BoolEventHandler(bool condition);
+
+
+
+    // Event нажатия кнопки создания рабочего
+    public event EmptyEventHandler OnWorkerAdd;
+    public event EmptyEventHandler OnMineTaken, OnMineLost;
+    public event DoubleParamsEventHandler OnWorkersUpdate;
 
     // Events нажатия кнопок спавна юнитов и каста способностей
     public event EventHandler OnUnitCreate, OnAbilitySelect, OnAbilityCast;
@@ -25,8 +37,18 @@ public class EventsManager : MonoBehaviour
 
 
 
-
-
+    public void AddWorker()
+    {
+        OnWorkerAdd?.Invoke();
+    }
+    public void TakeMine()
+    {
+        OnMineTaken?.Invoke();
+    }
+    public void LostMine()
+    {
+        OnMineLost?.Invoke();
+    }
 
     public void CreateUnut(int value)
     {
@@ -69,5 +91,9 @@ public class EventsManager : MonoBehaviour
     public void UpdateEnergy(int energyValue)
     {
         OnEnergyUpdate?.Invoke(energyValue);
+    }
+    public void UpdateWorkersData(int currentWorkers, int maxWorkers)
+    {
+        OnWorkersUpdate?.Invoke(currentWorkers, maxWorkers);
     }
 }

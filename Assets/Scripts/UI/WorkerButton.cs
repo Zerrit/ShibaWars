@@ -1,5 +1,5 @@
 
-public class UnitButton : ButtonController
+public class WorkerButton : ButtonController
 {
     protected override void OnEnable()
     {
@@ -10,8 +10,7 @@ public class UnitButton : ButtonController
     protected override void PressButton()
     {
         StartCooldown();
-
-        EventsManager.instance.CreateUnut(buttonId);
+        EventsManager.instance.AddWorker();
         EventsManager.instance.ReduceGold(cost);
     }
 }

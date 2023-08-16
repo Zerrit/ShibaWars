@@ -4,22 +4,24 @@ using UnityEngine;
 public class UnitsSpawner: MonoBehaviour
 {
     public UnitTemplate[] avalaibleUnits;
-
     public Transform unitPoolTransform;
+
+
+    private void Start()
+    {
+        InitUnitPools();
+    }
 
     private void OnEnable()
     {
-        StartCoroutine(SubscribeEvent());
+        EventsManager.instance.OnUnitCreate += CreateUnit;
     }
     private void OnDisable()
     {
         EventsManager.instance.OnUnitCreate -= CreateUnit;
     }
 
-    private void Start()
-    {
-        InitUnitPools();
-    }
+
 
     private void InitUnitPools()
     {
@@ -33,14 +35,5 @@ public class UnitsSpawner: MonoBehaviour
     {
         Entity unit = avalaibleUnits[unitNumber].pool.GetFreeElement();
         BattleCommunicator.instance.AddUnit(unit);
-    }
-
-
-
-
-    private IEnumerator SubscribeEvent()
-    {
-        yield return new WaitUntil(() => EventsManager.instance != null);
-        EventsManager.instance.OnUnitCreate += CreateUnit;
     }
 }

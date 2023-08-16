@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class ButtonController : MonoBehaviour
 {
+    public bool isLimitReached;
+
+
     [Header("Данные для автозаполнения")]
     public int buttonId;
     public int cost;
@@ -17,10 +20,9 @@ public class ButtonController : MonoBehaviour
     private bool onCooldown;
     private float timer;
 
-    protected virtual void Awake()
+    protected virtual void OnEnable()
     {
         button.onClick.AddListener(PressButton);
-        StartCoroutine(SubscribeEvent());
     }
 
 
@@ -35,6 +37,7 @@ public class ButtonController : MonoBehaviour
 
         timer = cooldown;
         onCooldown = true;
+        button.interactable = false;
     }
 
     private void Cooldown()
@@ -48,15 +51,11 @@ public class ButtonController : MonoBehaviour
 
     protected void CheckEccess(int value)
     {
-        button.interactable = (value >= cost && !onCooldown) ? true : false;
+        button.interactable = (value >= cost && !onCooldown && !isLimitReached) ? true : false;
     }
 
     protected virtual void PressButton()
     {
 
-    }
-    protected virtual IEnumerator SubscribeEvent()
-    {
-        yield return new WaitUntil(() => EventsManager.instance != null);
     }
 }

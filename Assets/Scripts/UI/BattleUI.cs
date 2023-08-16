@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 
@@ -12,15 +10,22 @@ public class BattleUI : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI goldScore;
     public TextMeshProUGUI energyScore;
+    public TextMeshProUGUI workersCount;
 
+    [Header("Child Panel")]
     public Transform actionButtonPanel;
+
+    [Header("Components")]
+    public WorkerButton workerButton;
     public ButtonController unitButton;
     public ButtonController abilityButton;
 
 
     private void OnEnable()
     {
-        StartCoroutine(SubscribeEvent());
+        EventsManager.instance.OnGoldUpdate += UpdateGoldScore;
+        EventsManager.instance.OnEnergyUpdate += UpdateEnergyScore;
+        EventsManager.instance.OnWorkersUpdate += UpdateWorkers;
     }
     private void OnDisable()
     {
@@ -28,6 +33,13 @@ public class BattleUI : MonoBehaviour
         EventsManager.instance.OnEnergyUpdate -= UpdateEnergyScore;
     }
 
+    public void InitializeWorkerButton(ButtonParameters workerParams)
+    {
+        workerButton.button.image.sprite = workerParams.buttonIcone;
+        workerButton.cooldown = workerParams.cooldown;
+        workerButton.cost = workerParams.cost;
+        workerButton.costText.text = workerParams.cost.ToString();
+    }
     public void InitializeUnitButtons(UnitsSpawner unitSpawner)
     {
         if (unitSpawner.avalaibleUnits.Length == 0) return;
@@ -73,12 +85,11 @@ public class BattleUI : MonoBehaviour
     }
 
 
-    private IEnumerator SubscribeEvent()
+    private void UpdateWorkers(int currentWorkers, int maxWorkers)
     {
-        yield return new WaitUntil(() => EventsManager.instance != null);
+        workersCount.text = currentWorkers + "/" + maxWorkers;
 
-        EventsManager.instance.OnGoldUpdate += UpdateGoldScore;
-        EventsManager.instance.OnEnergyUpdate += UpdateEnergyScore;
+        if (currentWorkers == maxWorkers) workerButton.isLimitReached = true;
+        else workerButton.isLimitReached = false;
     }
-
 }

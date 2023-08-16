@@ -829,6 +829,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityData: {fileID: 11400000, guid: 3ce9f869be36614499c3dd16fefda21a, type: 2}
   HealthBar: {fileID: 2189541133308822128}
+  isDead: 0
+  currentHealth: 0
   unitType: 0
   neutralState: 0
   distance: 0

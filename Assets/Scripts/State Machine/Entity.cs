@@ -27,6 +27,12 @@ public class Entity : MonoBehaviour, IDamageable
     public Transform SelfTransform { get; set; }
     public bool IsDead { get; set; }
 
+    /// <summary>
+    public bool isDead;
+    public float currentHealth;
+    /// </summary>
+
+
 
     public UnitType unitType;
     public bool neutralState = false;
@@ -58,6 +64,9 @@ public class Entity : MonoBehaviour, IDamageable
     public virtual void Update()
     {
         stateMachine.currentState.LogicUpdate();
+        isDead = IsDead;
+        currentHealth = CurrentHealth;
+
     }
     public virtual void FixedUpdate()
     {
