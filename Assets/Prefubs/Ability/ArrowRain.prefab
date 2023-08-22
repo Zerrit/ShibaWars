@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4431373831006516668}
   - component: {fileID: 2719304436102778812}
-  - component: {fileID: 4431373831006516670}
+  - component: {fileID: 4797799164796278363}
   m_Layer: 0
   m_Name: ArrowRain
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4431373831006516670
+--- !u!114 &4797799164796278363
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,7 +94,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4431373831006516669}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed0573bf8ac245d40ad5c0bbbcad8a87, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bc2315b87b305f47a7940c5081d01b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
+  side: 0
+  damage: 25
+  lifeTime: 6

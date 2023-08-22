@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ninja_IdleState : IdleState
 {
     protected ShibaNinja shibaNinja;
-    public Ninja_IdleState(Entity entity, FinitStateMachine stateMachine, string animBoolName, ShibaNinja shibaNinja) : base(entity, stateMachine, animBoolName)
+    public Ninja_IdleState(Unit entity, FinitStateMachine stateMachine, string animBoolName, ShibaNinja shibaNinja) : base(entity, stateMachine, animBoolName)
     {
         this.shibaNinja = shibaNinja;
     }
@@ -24,11 +24,14 @@ public class Ninja_IdleState : IdleState
     {
         base.LogicUpdate();
 
-        if (Time.time >= startTime + 0.7f) stateMachine.ChangeState(shibaNinja.moveState);
+        if (Time.time >= startTime + 0.5f && !BattleCommunicator.instance.CheckBarrier(shibaNinja))
+        {
+            stateMachine.ChangeState(shibaNinja.moveState);
+        }
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    public AttackState(Entity entity, FinitStateMachine stateMachine, string animBoolName) : base(entity, stateMachine, animBoolName)
+    public AttackState(Unit entity, FinitStateMachine stateMachine, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
     }
 
@@ -24,8 +24,8 @@ public class AttackState : State
         base.LogicUpdate();
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
     }
 }

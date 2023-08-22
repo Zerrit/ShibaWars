@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShibaOni : Entity
+public class ShibaOni : Unit
 {
     public ShibaOni_MoveState moveState { get; private set; }
     public ShibaOni_AttackState attackState { get; private set; }
@@ -17,24 +17,29 @@ public class ShibaOni : Entity
     {
         base.Awake();
 
-        moveState = new ShibaOni_MoveState(this, stateMachine, "Move", this);
-        attackState = new ShibaOni_AttackState(this, stateMachine, "Attack", this);
-        deathState = new ShibaOni_DeathState(this, stateMachine, "Death", this);
-        idleState = new ShibaOni_IdleState(this, stateMachine, "Idle", this);
+        moveState = new ShibaOni_MoveState(this, StateMachine, "Move", this);
+        attackState = new ShibaOni_AttackState(this, StateMachine, "Attack", this);
+        deathState = new ShibaOni_DeathState(this, StateMachine, "Death", this);
+        idleState = new ShibaOni_IdleState(this, StateMachine, "Idle", this);
     }
     private void OnEnable()
     {
-        stateMachine.Initialize(idleState);
+        StateMachine.Initialize(idleState);
     }
     public override void Attack()
     {
         base.Attack();
 
-        List<Entity> enemies = BattleCommunicator.instance.CheckEnemies(this);
-        foreach (Entity unit in enemies)
+        List<Unit> enemies = BattleCommunicator.instance.CheckEnemies(this);
+        foreach (Unit unit in enemies)
         {
             unit.GetDamage(damage);
         }
     }
 
+    public override void DefeatSelf()
+    {
+        base.DefeatSelf();
+        StateMachine.ChangeState(deathState);
+    }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShibaArcher_DeathState : DeathState
 {
     protected ShibaArcher shibaArcher;
-    public ShibaArcher_DeathState(Entity entity, FinitStateMachine stateMachine, string animBoolName, ShibaArcher shibaArcher) : base(entity, stateMachine, animBoolName)
+    public ShibaArcher_DeathState(Unit entity, FinitStateMachine stateMachine, string animBoolName, ShibaArcher shibaArcher) : base(entity, stateMachine, animBoolName)
     {
         this.shibaArcher = shibaArcher;
     }
@@ -29,8 +29,8 @@ public class ShibaArcher_DeathState : DeathState
         }
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
     }
 }

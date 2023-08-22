@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShibaArcher : Entity
+public class ShibaArcher : Unit
 {
     public ShibaArcher_MoveState moveState { get; private set; }
     public ShibaArcher_AttackState attackState { get; private set; }
@@ -17,15 +17,15 @@ public class ShibaArcher : Entity
     {
         base.Awake();
 
-        moveState = new ShibaArcher_MoveState(this, stateMachine, "Move", this);
-        attackState = new ShibaArcher_AttackState(this, stateMachine, "Attack", this);
-        deathState = new ShibaArcher_DeathState(this, stateMachine, "Death", this);
-        idleState = new ShibaArcher_IdleState(this, stateMachine, "Idle", this);
+        moveState = new ShibaArcher_MoveState(this, StateMachine, "Move", this);
+        attackState = new ShibaArcher_AttackState(this, StateMachine, "Attack", this);
+        deathState = new ShibaArcher_DeathState(this, StateMachine, "Death", this);
+        idleState = new ShibaArcher_IdleState(this, StateMachine, "Idle", this);
     }
 
     private void OnEnable()
     {
-        stateMachine.Initialize(idleState);
+        StateMachine.Initialize(idleState);
     }
 
     public override void Attack()
@@ -40,10 +40,10 @@ public class ShibaArcher : Entity
         weapon.Fire();
     }
 
-    public override void KillSelf()
+    public override void DefeatSelf()
     {
-        base.KillSelf();
-        stateMachine.ChangeState(deathState);
+        base.DefeatSelf();
+        StateMachine.ChangeState(deathState);
     }
 
 

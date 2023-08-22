@@ -1,4 +1,3 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -31,30 +30,23 @@ public class BattleUI : MonoBehaviour
     {
         EventsManager.instance.OnGoldUpdate -= UpdateGoldScore;
         EventsManager.instance.OnEnergyUpdate -= UpdateEnergyScore;
+        EventsManager.instance.OnWorkersUpdate -= UpdateWorkers;
     }
 
     public void InitializeWorkerButton(ButtonParameters workerParams)
     {
-        workerButton.button.image.sprite = workerParams.buttonIcone;
-        workerButton.cooldown = workerParams.cooldown;
-        workerButton.cost = workerParams.cost;
-        workerButton.costText.text = workerParams.cost.ToString();
+        FillButtonData(workerButton, workerParams, 0);
     }
     public void InitializeUnitButtons(UnitsSpawner unitSpawner)
     {
-        if (unitSpawner.avalaibleUnits.Length == 0) return;
+        if (unitSpawner.units.Length == 0) return;
 
         int unitId = 0;
-        foreach (UnitTemplate unit in unitSpawner.avalaibleUnits)
+        foreach (UnitTemplate unit in unitSpawner.units)
         {
             ButtonController button = Instantiate(unitButton, actionButtonPanel);
-            button.button.image.sprite = unit.buttonParameters.buttonIcone;
-            button.cooldown = unit.buttonParameters.cooldown;
-            button.cost = unit.buttonParameters.cost;
-            button.costText.text = button.cost.ToString();
-            button.buttonId = unitId;
+            FillButtonData(button, unit.buttonParameters, unitId);
             unitId++;
-
         }
     }
     public void InitializeAbilityButtons(AbilityCaster abilityCaster)
@@ -62,18 +54,22 @@ public class BattleUI : MonoBehaviour
         if (abilityCaster.abilities.Length == 0) return;
 
         int abilityId = 0;
-        foreach (Ability ability in abilityCaster.abilities)
+        foreach (AbilityTemplate ability in abilityCaster.abilities)
         {
             ButtonController button = Instantiate(abilityButton, actionButtonPanel);
-            button.button.image.sprite = ability.buttonParameters.buttonIcone;
-            button.cooldown = ability.buttonParameters.cooldown;
-            button.cost = ability.buttonParameters.cost;
-            button.costText.text = button.cost.ToString();
-            button.buttonId = abilityId;
+            FillButtonData(button, ability.buttonParameters, abilityId);
             abilityId++;
         }
     }
 
+    private void FillButtonData(ButtonController button, ButtonParameters buttonParameters, int buttonId)
+    {
+        button.button.image.sprite = buttonParameters.buttonIcone;
+        button.cooldown = buttonParameters.cooldown;
+        button.cost = buttonParameters.cost;
+        button.costText.text = button.cost.ToString();
+        button.buttonId = buttonId;
+    }
 
     private void UpdateGoldScore(int value)
     {
@@ -83,8 +79,6 @@ public class BattleUI : MonoBehaviour
     {
         energyScore.text = value.ToString();
     }
-
-
     private void UpdateWorkers(int currentWorkers, int maxWorkers)
     {
         workersCount.text = currentWorkers + "/" + maxWorkers;

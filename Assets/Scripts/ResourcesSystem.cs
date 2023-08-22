@@ -1,5 +1,3 @@
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ResourcesSystem : MonoBehaviour
@@ -30,13 +28,13 @@ public class ResourcesSystem : MonoBehaviour
 
     private void OnDisable()
     {
-        print("Выключение объекта");
         EventsManager.instance.OnGoldIncrease -= IncreaseGold;
         EventsManager.instance.OnEnergyIncrease -= IncreaseEnergy;
         EventsManager.instance.OnGoldReduce -= SpendGold;
         EventsManager.instance.OnEnergyReduce -= SpendEnergy;
         EventsManager.instance.OnWorkerAdd -= AddWorker;
         EventsManager.instance.OnMineTaken -= AddMaxWorkers;
+        EventsManager.instance.OnMineLost -= RemoveMaxWorkers;
     }
 
     private void Update()

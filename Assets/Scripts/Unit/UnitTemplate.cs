@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "UnitTemplate", menuName = "Unit/UnitTemplate")]
 public class UnitTemplate : ScriptableObject
 {
-    public Entity unit;
+    public Unit unit;
     public ButtonParameters buttonParameters;
-    public ObjectPooller<Entity> pool;
+    public ObjectPooller<Unit> pool;
 }
 

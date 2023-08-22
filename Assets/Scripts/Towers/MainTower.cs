@@ -5,7 +5,8 @@ using UnityEngine;
 public enum PlayerSide
 {
     leftPlayer,
-    rightPlayer
+    rightPlayer,
+    neutral
 }
 
 public class MainTower : MonoBehaviour, IDamageable
@@ -19,7 +20,7 @@ public class MainTower : MonoBehaviour, IDamageable
     public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
     public Transform SelfTransform { get; set; }
-    public bool IsDead { get; set; }
+    public bool IsDefeated { get; set; }
 
     public virtual void Start()
     {
@@ -27,21 +28,21 @@ public class MainTower : MonoBehaviour, IDamageable
         CurrentHealth = MaxHealth;
         SelfTransform = transform;
 
-        BattleCommunicator.instance.AddMainTower(this);
+        BattleCommunicator.instance.AddBuilding(this, playerSide);
     }
 
     public void GetDamage(float damage)
     {
-        if (IsDead != true)
+        if (IsDefeated != true)
         {
             CurrentHealth -= damage;
             healthBar.localScale = new Vector2(Mathf.Clamp01(CurrentHealth / MaxHealth), 1f);
 
-            if (CurrentHealth <= 0) KillSelf();
+            if (CurrentHealth <= 0) DefeatSelf();
         }
     }
 
-    public void KillSelf()
+    public void DefeatSelf()
     {
         print(playerSide + "Был уничтожен");
     }

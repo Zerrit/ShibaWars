@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveState : State
 {
-    public MoveState(Entity entity, FinitStateMachine stateMachine, string animBoolName) : base(entity, stateMachine, animBoolName)
+    public MoveState(Unit entity, FinitStateMachine stateMachine, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
     }
 
@@ -22,13 +22,13 @@ public class MoveState : State
     {
         base.LogicUpdate();
 
-        BattleCommunicator.instance.CheckAllies(entity);
         entity.Move();
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
 
+        BattleCommunicator.instance.CheckAllies(entity);
     }
 }

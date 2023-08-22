@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShibaSamurai_IdleState : IdleState
 {
     protected ShibaSamurai shibaSamurai;
-    public ShibaSamurai_IdleState(Entity entity, FinitStateMachine stateMachine, string animBoolName, ShibaSamurai shibaSamurai) : base(entity, stateMachine, animBoolName)
+    public ShibaSamurai_IdleState(Unit entity, FinitStateMachine stateMachine, string animBoolName, ShibaSamurai shibaSamurai) : base(entity, stateMachine, animBoolName)
     {
         this.shibaSamurai = shibaSamurai;
     }
@@ -24,11 +24,14 @@ public class ShibaSamurai_IdleState : IdleState
     {
         base.LogicUpdate();
 
-        if (Time.time >= startTime + 0.7f) stateMachine.ChangeState(shibaSamurai.moveState);
+        if (Time.time >= startTime + 0.5f && !BattleCommunicator.instance.CheckBarrier(shibaSamurai))
+        {
+            stateMachine.ChangeState(shibaSamurai.moveState);
+        }
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
     }
 }

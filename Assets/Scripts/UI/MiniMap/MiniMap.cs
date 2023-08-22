@@ -26,7 +26,7 @@ public class MiniMap : MonoBehaviour
         unit.endPoint = endPoint;
     }
 
-    public void AddNewIcon(Entity entity)
+    public void AddNewIcon(Unit entity)
     {
         MiniMapIcon go = Instantiate(unit, iconFolder);
         go.entity = entity;

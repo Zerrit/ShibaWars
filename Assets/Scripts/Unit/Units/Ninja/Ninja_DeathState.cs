@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ninja_DeathState : DeathState
 {
     protected ShibaNinja shibaNinja;
-    public Ninja_DeathState(Entity entity, FinitStateMachine stateMachine, string animBoolName, ShibaNinja shibaNinja) : base(entity, stateMachine, animBoolName)
+    public Ninja_DeathState(Unit entity, FinitStateMachine stateMachine, string animBoolName, ShibaNinja shibaNinja) : base(entity, stateMachine, animBoolName)
     {
         this.shibaNinja = shibaNinja;
     }
@@ -22,8 +22,6 @@ public class Ninja_DeathState : DeathState
 
     public override void LogicUpdate()
     {
-        base.LogicUpdate();
-
         if (Time.time > startTime + 1.5f)
         {
             base.LogicUpdate();
@@ -31,8 +29,8 @@ public class Ninja_DeathState : DeathState
         }
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShibaSamurai : Entity
+public class ShibaSamurai : Unit
 {
     public ShibaSamurai_IdleState idleState { get; private set; }
     public ShibaSamurai_MoveState moveState { get; private set; }
@@ -14,15 +14,15 @@ public class ShibaSamurai : Entity
     {
         base.Awake();
 
-        idleState = new ShibaSamurai_IdleState(this, stateMachine, "Idle", this);
-        moveState = new ShibaSamurai_MoveState(this, stateMachine, "Move", this);
-        attackState = new ShibaSamurai_AttackState(this, stateMachine, "Attack", this);
-        deathState = new ShibaSamurai_DeathState(this, stateMachine, "Death", this);
+        idleState = new ShibaSamurai_IdleState(this, StateMachine, "Idle", this);
+        moveState = new ShibaSamurai_MoveState(this, StateMachine, "Move", this);
+        attackState = new ShibaSamurai_AttackState(this, StateMachine, "Attack", this);
+        deathState = new ShibaSamurai_DeathState(this, StateMachine, "Death", this);
     }
 
     private void OnEnable()
     {
-        stateMachine.Initialize(idleState);
+        StateMachine.Initialize(idleState);
     }
 
     public override void Attack()
@@ -32,10 +32,9 @@ public class ShibaSamurai : Entity
         enemy.GetDamage(damage);
     }
 
-    public override void KillSelf()
+    public override void DefeatSelf()
     {
-        base.KillSelf();
-        stateMachine.ChangeState(deathState);
+        base.DefeatSelf();
+        StateMachine.ChangeState(deathState);
     }
-
 }

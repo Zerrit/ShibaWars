@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DeathState : State
 {
-    public DeathState(Entity entity, FinitStateMachine stateMachine, string animBoolName) : base(entity, stateMachine, animBoolName)
+    public DeathState(Unit entity, FinitStateMachine stateMachine, string animBoolName) : base(entity, stateMachine, animBoolName)
     {
     }
 
@@ -26,8 +26,8 @@ public class DeathState : State
         entity.SetBasicData();
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
     }
 }

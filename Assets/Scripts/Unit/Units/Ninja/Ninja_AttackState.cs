@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ninja_AttackState : AttackState
 {
     protected ShibaNinja shibaNinja;
-    public Ninja_AttackState(Entity entity, FinitStateMachine stateMachine, string animBoolName, ShibaNinja shibaNinja) : base(entity, stateMachine, animBoolName)
+    public Ninja_AttackState(Unit entity, FinitStateMachine stateMachine, string animBoolName, ShibaNinja shibaNinja) : base(entity, stateMachine, animBoolName)
     {
         this.shibaNinja = shibaNinja;
     }
@@ -24,14 +24,14 @@ public class Ninja_AttackState : AttackState
     {
         base.LogicUpdate();
 
-        if (entity.enemy.IsDead == true && entity.attackFinished)
+        if (entity.enemy.IsDefeated == true && entity.attackFinished)
         {
             stateMachine.ChangeState(shibaNinja.moveState);
         }
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
     }
 }

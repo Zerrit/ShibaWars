@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class ObjectPooller<T> where T : MonoBehaviour
@@ -51,7 +50,7 @@ public class ObjectPooller<T> where T : MonoBehaviour
             if (!elem.gameObject.activeInHierarchy)
             {
                 element = elem;
-                elem.gameObject.SetActive(true);
+                //elem.gameObject.SetActive(true);
                 return true;
             }
         }
@@ -62,9 +61,13 @@ public class ObjectPooller<T> where T : MonoBehaviour
 
     public T GetFreeElement()
     {
-        if (HasFreeElement(out var element)) return element;
+        if (HasFreeElement(out var element))
+        {
+            element.gameObject.SetActive(true);
+            return element;
+        }
 
-        if (autoExpend) return CreateObject();
+        if (autoExpend) return CreateObject(true);
 
         throw new System.Exception(message:$"В пуле нет свободных элементов {typeof(T)}");
     }

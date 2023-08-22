@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UnitsSpawner: MonoBehaviour
 {
-    public UnitTemplate[] avalaibleUnits;
+    public UnitTemplate[] units;
     public Transform unitPoolTransform;
 
 
@@ -25,15 +25,15 @@ public class UnitsSpawner: MonoBehaviour
 
     private void InitUnitPools()
     {
-        for (int i = 0; i < avalaibleUnits.Length; i++)
+        for (int i = 0; i < units.Length; i++)
         {
-            avalaibleUnits[i].pool = new EntityPooler(avalaibleUnits[i].unit, unitPoolTransform, 4 - i);
+            units[i].pool = new EntityPooler(units[i].unit, unitPoolTransform, 4 - i, PlayerSide.leftPlayer);
         }
     }
 
     public void CreateUnit(int unitNumber)
     {
-        Entity unit = avalaibleUnits[unitNumber].pool.GetFreeElement();
+        Unit unit = units[unitNumber].pool.GetFreeElement();
         BattleCommunicator.instance.AddUnit(unit);
     }
 }

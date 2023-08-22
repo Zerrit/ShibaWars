@@ -1,18 +1,64 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ArrowRain", menuName = "Ability/ArrowRainAbility")]
+
 public class ArrowRain : Ability
 {
-    public ArrowRainObject arrowRain;
-
     [Header("Дополнительные параметры")]
     public int damage;
+    public int lifeTime = 6;
 
-    public override bool UseAbility(Vector2 touchPoint)
+    private float spawnTime;
+    private float lastDamageTime = 0;
+    private Vector2 abilityPlace;
+    List<IDamageable> allTargets;
+
+
+    private void OnEnable()
     {
-        Vector2 way = BattleCommunicator.instance.GetPositionByX(touchPoint);
-        Instantiate(arrowRain, way, Quaternion.identity);
+        lastDamageTime = Time.time;
+        spawnTime = Time.time;
+    }
+    private void Update()
+    {
+        DamageAllTargers();
+        if (Time.time > spawnTime + lifeTime) FinishAbility();
+    }
 
+
+    public override void Initialize(PlayerSide side)
+    {
+        this.side = side;
+        allTargets = new List<IDamageable>();
+    }
+
+
+    public override bool SelectTarget(Vector2 touchPoint)
+    {
+        abilityPlace = BattleCommunicator.instance.GetPositionByX(touchPoint);
         return true;
+    }
+
+    public override void UseAbility()
+    {
+        transform.position = abilityPlace;
+    }
+    private void DamageAllTargers()
+    {
+        if (Time.time >= lastDamageTime + 0.25f)
+        {
+            allTargets = BattleCommunicator.instance.CheckUnitsAround((Vector2)transform.position);
+
+            foreach (IDamageable target in allTargets)
+            {
+                target.GetDamage(5);
+                lastDamageTime = Time.time;
+            }
+        }
+    }
+    private void FinishAbility()
+    {
+        allTargets.Clear();
+        gameObject.SetActive(false);
     }
 }

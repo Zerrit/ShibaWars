@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc7e517e86f0014699f6542be4f4d41, type: 3}
+  m_Name: Barricade
+  m_EditorClassIdentifier: 
+  ability: {fileID: 5823314617152143160, guid: 2f10bc7c315a473439d6a686abe8a403, type: 3}
+  buttonParameters: {fileID: 11400000, guid: 701b387b3ffc5b647b54b34b8796efe1, type: 2}

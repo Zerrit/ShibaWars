@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MiniMapIcon : MonoBehaviour
 {
-    public Entity entity;
+    public Unit entity;
 
     public Transform startPoint;
     public Transform endPoint;
@@ -31,7 +31,7 @@ public class MiniMapIcon : MonoBehaviour
 
     private void CheckIsAlive()
     {
-        if (entity.IsDead)
+        if (entity.IsDefeated)
         {
             Destroy(gameObject, 1f);
         }

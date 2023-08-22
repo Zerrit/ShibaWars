@@ -43,7 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6865394908944884662}
   - component: {fileID: 352089500941138814}
-  - component: {fileID: 393501568596527485}
+  - component: {fileID: 5823314617152143160}
   m_Layer: 9
   m_Name: Barricade
   m_TagString: Untagged
@@ -66,7 +66,7 @@ Transform:
   - {fileID: 6487115919506767942}
   - {fileID: 6083618446523862662}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &352089500941138814
 SpriteRenderer:
@@ -120,7 +120,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &393501568596527485
+--- !u!114 &5823314617152143160
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -129,13 +129,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4563739903199854452}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a4d3de1652b83f44b65d67e99358fd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 8881f683d14d53448b5b2172f700337c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealt: 150
-  lifeTime: 8
+  side: 0
+  maxHealth: 200
+  lifeTime: 6
   HealthBar: {fileID: 4617480585347349511}
-  spawnFX: {fileID: 43191708572372967, guid: d1e243683605f254387703d84fe32876, type: 3}
+  spawnFX: {fileID: 6972629252847461824}
 --- !u!1 &5632377236021150095
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,5 +369,10 @@ PrefabInstance:
 --- !u!4 &6083618446523862662 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3762732487912662177, guid: d1e243683605f254387703d84fe32876, type: 3}
+  m_PrefabInstance: {fileID: 6943059677584992807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6972629252847461824 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 43191708572372967, guid: d1e243683605f254387703d84fe32876, type: 3}
   m_PrefabInstance: {fileID: 6943059677584992807}
   m_PrefabAsset: {fileID: 0}

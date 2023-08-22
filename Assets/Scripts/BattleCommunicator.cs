@@ -6,47 +6,51 @@ public class BattleCommunicator : MonoBehaviour
 {
     public static BattleCommunicator instance;
 
-    public PathCreator pathLine;
+    public PathCreator pathLine; 
     public float pathLength;
 
     public int leftPlayerUnitsCount;
     public int rightPlayerUnitsCount;
 
-    public MainTower leftPlayerTower;
-    public MainTower rightPlayerTower;
+    public int leftPlayerBuildingsCount;
+    public int rightPlayerBuildingsCount;
 
-    private Barricade leftPlayerBarricade;
-    private Barricade rightPlayerBarricade;
+    private IDamageable leftPlayerBarricade;
+    private IDamageable rightPlayerBarricade;
 
-    public List<Entity> leftPlayerUnits = new List<Entity>();
-    public List<Entity> rightPlayerUnits = new List<Entity>();
+    public List<Unit> leftPlayerUnits = new List<Unit>();
+    public List<Unit> rightPlayerUnits = new List<Unit>();
+
+    public List<IDamageable> leftPlayerBuildings = new List<IDamageable>();
+    public List<IDamageable> rightPlayerBuildings = new List<IDamageable>();
 
     float lastSortTime = 0;
 
     private void Awake()
     {
         instance = this;
-    }
-    private void Start()
-    {
+
         pathLength = pathLine.path.length;
         leftPlayerUnitsCount = 0;
         rightPlayerUnitsCount = 0;
+        leftPlayerBuildingsCount = 0;
+        rightPlayerBuildingsCount = 0;
     }
+
     private void Update()
     {
         UnitSorting();
     }
 
 
-    public bool CheckEnemy(Entity checkingUnit)
+    public bool CheckEnemy(Unit checkingUnit)
     {
 
-        if (checkingUnit.direction > 0)
+        if (checkingUnit.Side == PlayerSide.leftPlayer)
         {
             if (rightPlayerUnitsCount == 0) return false;
 
-            if ((rightPlayerUnits[0].distance - checkingUnit.distance) <= checkingUnit.entityData.checkEnemyDistance)
+            if ((rightPlayerUnits[0].distance - checkingUnit.distance) <= checkingUnit.UnitParameters.checkEnemyDistance)
             {
                 checkingUnit.enemy = rightPlayerUnits[0];
                 return true;
@@ -57,7 +61,7 @@ public class BattleCommunicator : MonoBehaviour
         {
             if (leftPlayerUnitsCount == 0) return false;
 
-            if ((checkingUnit.distance - leftPlayerUnits[leftPlayerUnitsCount - 1].distance) <= checkingUnit.entityData.checkEnemyDistance)
+            if ((checkingUnit.distance - leftPlayerUnits[leftPlayerUnitsCount - 1].distance) <= checkingUnit.UnitParameters.checkEnemyDistance)
             {
                 checkingUnit.enemy = leftPlayerUnits[leftPlayerUnitsCount-1];
                 return true;
@@ -65,9 +69,9 @@ public class BattleCommunicator : MonoBehaviour
             else return false;
         }
     } // ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ÂĞÀÃÀ Â ĞÀÄÈÓÑÅ ÎÁÍÀĞÓÆÅÍÈß
-    public void CheckAllies(Entity checkingUnit)
+    public void CheckAllies(Unit checkingUnit)
     {
-        if (checkingUnit.direction > 0)
+        if (checkingUnit.Side == PlayerSide.leftPlayer)
         {
             if (leftPlayerUnitsCount < 2)
             {
@@ -75,7 +79,7 @@ public class BattleCommunicator : MonoBehaviour
                 return;
             }
 
-            foreach (Entity allie in leftPlayerUnits)
+            foreach (Unit allie in leftPlayerUnits)
             {
                 if ((allie.distance > checkingUnit.distance) && (allie.distance - checkingUnit.distance) <= 10f && (checkingUnit.heightIndex == allie.heightIndex))
                 {
@@ -91,7 +95,7 @@ public class BattleCommunicator : MonoBehaviour
                 return; 
             }
 
-            foreach (Entity allie in rightPlayerUnits)
+            foreach (Unit allie in rightPlayerUnits)
             {
                 if ((checkingUnit.distance > allie.distance) && (checkingUnit.distance - allie.distance) <= 10f && (checkingUnit.heightIndex == allie.heightIndex))
                 {
@@ -100,40 +104,63 @@ public class BattleCommunicator : MonoBehaviour
             }
         }
     } // ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ÑÎŞÇÍÈÊÎÂ Â ĞÀÄÈÓÑÅ ÏÅĞÅÑÒĞÎÅÍÈß
-    public bool CheckEnemyTower(Entity checkingUnit)
+    public bool CheckEnemyBuilding(Unit checkingUnit)
     {
-        if (checkingUnit.direction > 0)
+        if (checkingUnit.Side == PlayerSide.leftPlayer)
         {
-            if (rightPlayerTower.distance - checkingUnit.distance <= checkingUnit.entityData.checkEnemyDistance)
+            foreach (IDamageable build in rightPlayerBuildings)
             {
-                checkingUnit.enemy = rightPlayerTower;
+                if ((build.SelfTransform.position.x - checkingUnit.SelfTransform.position.x) <= checkingUnit.UnitParameters.checkEnemyDistance && build.SelfTransform.position.x > checkingUnit.SelfTransform.position.x)
+                {
+                    checkingUnit.enemy = build;
+                    return true;
+                }
+            }
+            return false;
+        }
+        else
+        {
+            foreach (IDamageable build in leftPlayerBuildings)
+            {
+                if ((checkingUnit.SelfTransform.position.x - build.SelfTransform.position.x) <= checkingUnit.UnitParameters.checkEnemyDistance && build.SelfTransform.position.x < checkingUnit.SelfTransform.position.x)
+                {
+                    checkingUnit.enemy = build;
+                    return true;
+                }
+            }
+            return false;
+        }
+    }  // ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ÂĞÀÆÅÑÊÈÕ ÑÒĞÎÅÍÈÉ Â ĞÀÄÈÓÑÅ ÎÁÍÀĞÓÆÅÍÈß
+    public bool CheckBarrier(Unit checkingUnit) //ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ÁÀĞÈÊÀÄÛ
+    {
+        if (checkingUnit.Side == PlayerSide.leftPlayer)
+        {
+            if (leftPlayerBarricade == null) return false;
+            if ((leftPlayerBarricade.SelfTransform.position.x - checkingUnit.SelfTransform.position.x) <= checkingUnit.UnitParameters.checkEnemyDistance && (leftPlayerBarricade.SelfTransform.position.x > checkingUnit.SelfTransform.position.x))
+            {
                 return true;
             }
             else return false;
         }
         else
         {
-            if (checkingUnit.distance - leftPlayerTower.distance <= checkingUnit.entityData.checkEnemyDistance)
+            if (rightPlayerBarricade == null) return false;
+            if ((checkingUnit.SelfTransform.position.x - rightPlayerBarricade.SelfTransform.position.x) <= checkingUnit.UnitParameters.checkEnemyDistance && (leftPlayerBarricade.SelfTransform.position.x < checkingUnit.SelfTransform.position.x))
             {
-                checkingUnit.enemy = leftPlayerTower;
                 return true;
             }
             else return false;
         }
-    } // ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ÂĞÀÆÅÑÊÎÃÎ ÃËÀÂÍÎÃÎ ÇÄÀÍÈß Â ĞÀÄÈÓÑÅ ÎÁÍÀĞÓÆÅÍÈß
-    public bool CheckBarrier(Entity chekingUnit) //ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ÁÀĞÈÊÀÄÛ
-    {
-        return false;
     }
-    public List<Entity> CheckEnemies(Entity checkingUnit)
+    public List<Unit> CheckEnemies(Unit checkingUnit)
     {
-        List<Entity> enemies = new List<Entity>();
+        List<Unit> enemies = new List<Unit>();
 
-        if (checkingUnit.direction > 0)
+        if (checkingUnit.Side == PlayerSide.leftPlayer)
         {
-            foreach(Entity unit in rightPlayerUnits)
+            foreach(Unit unit in rightPlayerUnits)
             {
-                if (unit.distance - checkingUnit.distance <= checkingUnit.entityData.maxAttackRange)
+                if (unit.distance - checkingUnit.distance <= checkingUnit.UnitParameters.maxAttackRange)
                 {
                     enemies.Add(unit);
                 }
@@ -143,9 +170,9 @@ public class BattleCommunicator : MonoBehaviour
         }
         else
         {
-            foreach (Entity unit in leftPlayerUnits)
+            foreach (Unit unit in leftPlayerUnits)
             {
-                if (checkingUnit.distance - unit.distance <= checkingUnit.entityData.maxAttackRange)
+                if (checkingUnit.distance - unit.distance <= checkingUnit.UnitParameters.maxAttackRange)
                 {
                     enemies.Add(unit);
                 }
@@ -153,13 +180,13 @@ public class BattleCommunicator : MonoBehaviour
             }
             return enemies;
         }
-    }
+    } // ÏÎËÓ×ÅÍÈÅ ÑÏÈÑÊÀ ÂÑÅÕ ÂĞÀÃÎÂ Â ĞÀÄÈÓÑÅ ÎÁÍÀĞÓÆÅÍÈß ÏÅĞÅÄ ÑÎÁÎÉ
     public List<IDamageable> CheckUnitsAround(Vector2 touchPosition)
     {
         List<IDamageable> enemies = new List<IDamageable>();
         Vector2 touchPos = pathLine.path.GetClosestPointOnPathByX(touchPosition);
 
-        foreach (Entity unit in leftPlayerUnits)
+        foreach (Unit unit in leftPlayerUnits)
         {
             if (Mathf.Abs(unit.SelfTransform.position.x - touchPos.x) < 5f)
             {
@@ -167,7 +194,7 @@ public class BattleCommunicator : MonoBehaviour
             }
             else continue;
         }
-        foreach (Entity unit in rightPlayerUnits)
+        foreach (Unit unit in rightPlayerUnits)
         {
             if (Mathf.Abs(unit.SelfTransform.position.x - touchPos.x) < 5f)
             {
@@ -178,34 +205,59 @@ public class BattleCommunicator : MonoBehaviour
 
         return enemies;
 
-    }
+    } // ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ŞÍÈÒÎÂ Â ĞÀÄÈÓÑÅ ÎÒ ÒÎ×ÊÈ ÊÀÑÀÍÈß
     public bool CheckAnyAround(Vector2 touchPosition)
     {
         Vector2 touchPos = pathLine.path.GetClosestPointOnPathByX(touchPosition);
-        foreach (Entity unit in leftPlayerUnits)
+        foreach (Unit unit in leftPlayerUnits)
         {
-            if (Mathf.Abs(unit.SelfTransform.position.x - touchPos.x) < 5f) return false;
+            if (Mathf.Abs(unit.SelfTransform.position.x - touchPos.x) < 5f) return true;
         }
 
-        foreach (Entity unit in rightPlayerUnits)
+        foreach (Unit unit in rightPlayerUnits)
         {
-            if (Mathf.Abs(unit.SelfTransform.position.x - touchPos.x) < 5f) return false;
+            if (Mathf.Abs(unit.SelfTransform.position.x - touchPos.x) < 5f) return true;
         }
 
-        if (Mathf.Abs(leftPlayerTower.SelfTransform.position.x - touchPos.x) < 5f) return false;
-        if (Mathf.Abs(rightPlayerTower.SelfTransform.position.x - touchPos.x) < 5f) return false;
+        foreach (IDamageable build in leftPlayerBuildings)
+        {
+            if (Mathf.Abs(build.SelfTransform.position.x - touchPos.x) < 5f) return true;
+        }
 
-        return true;
-    }
+        foreach (IDamageable build in rightPlayerBuildings)
+        {
+            if (Mathf.Abs(build.SelfTransform.position.x - touchPos.x) < 5f) return true;
+        }
 
+        return false;
+    } // ÏĞÎÂÅĞÊÀ ÍÀËÈ×Èß ÊÀÊÈÕ ËÈÁÎ ÎÁÚÅÊÒÎÂ Â ĞÀÄÈÓÑÅ ÎÒ ÒÎ×ÊÈ ÊÀÑÀÍÈß
+    public PlayerSide DefineInfluence(float XPos)
+    {
+        if (leftPlayerUnitsCount != 0)
+        {
+            if (leftPlayerUnits[leftPlayerUnitsCount - 1].SelfTransform.position.x - XPos >= 10f)
+            {
+                return PlayerSide.leftPlayer;
+            }
+        }
+        else if(rightPlayerUnitsCount != 0)
+        {
+            if (XPos - rightPlayerUnits[0].SelfTransform.position.x >= 10f)
+            {
+                return PlayerSide.rightPlayer;
+            }
+        }
+        return PlayerSide.neutral;
+    } // ÎÏĞÅÄÅËÅÍÈÅ ÂËÈßÍÈß ÍÀÄ ÑÒĞÎÅÍÈÅÌ
 
+    // ĞÀÑÑ×ÅÒ ÄÀÍÍÛÕ ÏÎ ĞÀÑÏÎËÎÆÅÍÈŞ ÍÀ ÊĞÈÂÎÉ
     public Vector2 GetPositionByDistance(float distance)
     {
         return pathLine.path.GetPointAtDistance(distance);
     }
-    public float GetStartDistance(int direction)
+    public float GetStartDistance(PlayerSide side)
     {
-        if (direction > 0) return 0.1f;
+        if (side == PlayerSide.leftPlayer) return 0.1f;
         else return pathLength - 0.1f;
     }
     public Vector2 GetPositionByX(Vector2 touchPos)
@@ -213,9 +265,11 @@ public class BattleCommunicator : MonoBehaviour
         return pathLine.path.GetClosestPointOnPathByX(touchPos);
     }
 
-    public void AddUnit(Entity unit)
+
+    // ÄÎÁÀÂËÅÍÈÅ È ÓÄÀËÅÍÈÅ ÑÓÙÍÎÑÒÅÉ ÈÇ ÑÏÈÑÊÎÂ
+    public void AddUnit(Unit unit)
     {
-        if (unit.direction > 0)
+        if (unit.Side == PlayerSide.leftPlayer)
         {
             leftPlayerUnits.Add(unit);
             leftPlayerUnitsCount++;
@@ -226,9 +280,9 @@ public class BattleCommunicator : MonoBehaviour
             rightPlayerUnitsCount++;
         }
     }
-    public void DeleteUnit(Entity unit)
+    public void DeleteUnit(Unit unit)
     {
-        if (unit.direction > 0)
+        if (unit.Side == PlayerSide.leftPlayer)
         {
             leftPlayerUnitsCount--;
             leftPlayerUnits.Remove(unit);
@@ -239,41 +293,91 @@ public class BattleCommunicator : MonoBehaviour
             rightPlayerUnits.Remove(unit);
         }
     }
-    public void AddMainTower(MainTower tower)
+    public void AddBuilding(IDamageable building, PlayerSide side)
     {
-        if (tower.playerSide == PlayerSide.leftPlayer)
+        if (side == PlayerSide.leftPlayer)
         {
-            leftPlayerTower = tower;
-            leftPlayerTower.distance = 0f;
+            leftPlayerBuildings.Add(building);
+            leftPlayerBuildingsCount++;
+            QuickSortBuildings(leftPlayerBuildings, 0, leftPlayerBuildingsCount - 1);
         }
-        else
+        else if(side == PlayerSide.rightPlayer)
         {
-            rightPlayerTower = tower;
-            rightPlayerTower.distance = pathLength;
+            rightPlayerBuildings.Add(building);
+            rightPlayerBuildingsCount++;
+            QuickSortBuildings(rightPlayerBuildings, 0, rightPlayerBuildingsCount - 1);
+        }
+    }
+    public void RevomeBuilding(IDamageable building, PlayerSide side)
+    {
+        if (side == PlayerSide.leftPlayer)
+        {
+            leftPlayerBuildings.Remove(building);
+            leftPlayerBuildingsCount--;
+        }
+        else if (side == PlayerSide.rightPlayer)
+        {
+            rightPlayerBuildings.Remove(building);
+            rightPlayerBuildingsCount--;
+        }
+    }
+    public void AddBarricade(IDamageable barrier, PlayerSide side)
+    {
+        if (side == PlayerSide.leftPlayer)
+        {
+            leftPlayerBarricade = barrier;
+            leftPlayerBuildings.Add(barrier);
+            leftPlayerBuildingsCount++;
+            QuickSortBuildings(leftPlayerBuildings, 0, leftPlayerBuildingsCount - 1);
+
+        }
+        else if (side == PlayerSide.rightPlayer)
+        {
+            rightPlayerBarricade = barrier;
+            rightPlayerBuildings.Add(barrier);
+            rightPlayerBuildingsCount++;
+            QuickSortBuildings(rightPlayerBuildings, 0, rightPlayerBuildingsCount - 1);
+        }
+    }
+    public void RemoveBarricade(IDamageable barrier, PlayerSide side)
+    {
+        if (side == PlayerSide.leftPlayer)
+        {
+            leftPlayerBarricade = null;
+            leftPlayerBuildings.Remove(barrier);
+            leftPlayerBuildingsCount--;
+
+        }
+        else if (side == PlayerSide.rightPlayer)
+        {
+            rightPlayerBarricade = null;
+            rightPlayerBuildings.Remove(barrier);
+            leftPlayerBuildingsCount--;
         }
     }
 
 
+    //  ÑÎĞÒÈĞÎÂÊÈ ÑÏÈÑÊÎÂ
     public void UnitSorting()
     {
         if (Time.time >= lastSortTime + 0.1f)
         {
-            QuickSortByDistance(leftPlayerUnits, 0, leftPlayerUnitsCount - 1);
-            QuickSortByDistance(rightPlayerUnits, 0, rightPlayerUnitsCount - 1);
+            QuickSortUnits(leftPlayerUnits, 0, leftPlayerUnitsCount - 1);
+            QuickSortUnits(rightPlayerUnits, 0, rightPlayerUnitsCount - 1);
             lastSortTime = Time.time;
         }
     }
-    public void QuickSortByDistance(List<Entity> list, int start, int end)
+    public void QuickSortUnits(List<Unit> list, int start, int end)
     {
         if (start >= end) return;
 
-        int pivot = Partition(list, start, end);
-        QuickSortByDistance(list, start, pivot - 1);
-        QuickSortByDistance(list, pivot + 1, end);
+        int pivot = PartitionUnit(list, start, end);
+        QuickSortUnits(list, start, pivot - 1);
+        QuickSortUnits(list, pivot + 1, end);
     }
-    public int Partition(List<Entity> list, int start, int end)
+    public int PartitionUnit(List<Unit> list, int start, int end)
     {
-        Entity temp;                                   //Áóôåğ äëÿ îáìåíà
+        Unit temp;                                   //Áóôåğ äëÿ îáìåíà
         int marker = start;                             //Äåëèòåëü ìàññèâà íà ïîä÷àñòè
         for (int i = start; i <= end; i++)
         {
@@ -292,5 +396,32 @@ public class BattleCommunicator : MonoBehaviour
         return marker;
     }
 
+    public void QuickSortBuildings(List<IDamageable> list, int start, int end)
+    {
+        if (start >= end) return;
 
+        int pivot = PartitionBuildings(list, start, end);
+        QuickSortBuildings(list, start, pivot - 1);
+        QuickSortBuildings(list, pivot + 1, end);
+    }
+    public int PartitionBuildings(List<IDamageable> list, int start, int end)
+    {
+        IDamageable temp;                 //Áóôåğ äëÿ îáìåíà
+        int marker = start;                //Äåëèòåëü ìàññèâà íà ïîä÷àñòè
+        for (int i = start; i < end; i++)
+        {
+            if (list[i].SelfTransform.position.x < list[end].SelfTransform.position.x)    //array[end] is pivot
+            {
+                temp = list[marker];               // swap
+                list[marker] = list[i];
+                list[i] = temp;
+                marker++;
+            }
+        }
+        //put pivot(array[end]) between left and right subarrays
+        temp = list[marker];
+        list[marker] = list[end];
+        list[end] = temp;
+        return marker;
+    }
 }

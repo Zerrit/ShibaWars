@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShibaOni_AttackState : AttackState
 {
     protected ShibaOni shibaOni;
-    public ShibaOni_AttackState(Entity entity, FinitStateMachine stateMachine, string animBoolName, ShibaOni shibaOni) : base(entity, stateMachine, animBoolName)
+    public ShibaOni_AttackState(Unit entity, FinitStateMachine stateMachine, string animBoolName, ShibaOni shibaOni) : base(entity, stateMachine, animBoolName)
     {
         this.shibaOni = shibaOni;
     }
@@ -24,14 +24,14 @@ public class ShibaOni_AttackState : AttackState
     {
         base.LogicUpdate();
 
-        if (entity.enemy.IsDead == true && entity.attackFinished)
+        if (entity.enemy.IsDefeated == true && entity.attackFinished)
         {
             stateMachine.ChangeState(shibaOni.moveState);
         }
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
     }
 }

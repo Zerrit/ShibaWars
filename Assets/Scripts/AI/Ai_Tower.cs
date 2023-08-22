@@ -14,16 +14,15 @@ public class Ai_Tower : MainTower
     public Transform unitPoolTransform;
 
     [Header("Units")]
-    public ShibaSlave slave;
-    public Entity samurai;
-    public Entity archer;
-    public Entity ninja;
-    public Entity oni;
+    public Unit samurai;
+    public Unit archer;
+    public Unit ninja;
+    public Unit oni;
 
-    private ObjectPooller<Entity> samuraiPool;
-    private ObjectPooller<Entity> archerPool;
-    private ObjectPooller<Entity> technicPool;
-    private ObjectPooller<Entity> elitPool;
+    private ObjectPooller<Unit> samuraiPool;
+    private ObjectPooller<Unit> archerPool;
+    private ObjectPooller<Unit> technicPool;
+    private ObjectPooller<Unit> elitPool;
 
     [Header("OtherParameters")]
     public GameObject spawnVFX;
@@ -34,7 +33,7 @@ public class Ai_Tower : MainTower
     {
         base.Start();
 
-        samuraiPool = new EntityPooler(samurai, unitPoolTransform, 1, true);
+        samuraiPool = new EntityPooler(samurai, unitPoolTransform, 0, PlayerSide.rightPlayer);
         //archerPool = new ObjectPooller<Entity>(archer, 4, unitPoolTransform);
         //technicPool = new ObjectPooller<Entity>(ninja, 2, unitPoolTransform);
         //elitPool = new ObjectPooller<Entity>(oni, 2, unitPoolTransform);
@@ -53,7 +52,7 @@ public class Ai_Tower : MainTower
 
     public void CreateShibaSamurai()
     {
-        Entity unit = samuraiPool.GetFreeElement();
+        Unit unit = samuraiPool.GetFreeElement();
         Instantiate(spawnVFX, unit.SelfTransform);
         BattleCommunicator.instance.AddUnit(unit);
 
@@ -62,19 +61,19 @@ public class Ai_Tower : MainTower
 
     public void CreateShibaArcher()
     {
-        Entity unit = archerPool.GetFreeElement();
+        Unit unit = archerPool.GetFreeElement();
         BattleCommunicator.instance.rightPlayerUnits.Add(unit);
     }
 
     public void CreateShibaNinja()
     {
-        Entity unit = technicPool.GetFreeElement();
+        Unit unit = technicPool.GetFreeElement();
         BattleCommunicator.instance.rightPlayerUnits.Add(unit);
     }
 
     public void CreateShibaOni()
     {
-        Entity unit = elitPool.GetFreeElement();
+        Unit unit = elitPool.GetFreeElement();
         BattleCommunicator.instance.rightPlayerUnits.Add(unit);
     }
 

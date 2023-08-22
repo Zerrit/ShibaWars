@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ninja_AbilityState : AbilityState
 {
     protected ShibaNinja shibaNinja;
-    public Ninja_AbilityState(Entity entity, FinitStateMachine stateMachine, string animBoolName, ShibaNinja shibaNinja) : base(entity, stateMachine, animBoolName)
+    public Ninja_AbilityState(Unit entity, FinitStateMachine stateMachine, string animBoolName, ShibaNinja shibaNinja) : base(entity, stateMachine, animBoolName)
     {
         this.shibaNinja = shibaNinja;
     }
@@ -30,8 +30,8 @@ public class Ninja_AbilityState : AbilityState
         }
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
     }
 }

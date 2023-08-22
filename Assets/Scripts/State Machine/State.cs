@@ -5,13 +5,13 @@ using UnityEngine;
 public class State 
 {
     protected FinitStateMachine stateMachine;
-    protected Entity entity;
+    protected Unit entity;
 
     protected float startTime;
 
     protected string animBoolName;
 
-    public State(Entity entity, FinitStateMachine stateMachine, string animBoolName)
+    public State(Unit entity, FinitStateMachine stateMachine, string animBoolName)
     {
         this.entity = entity;
         this.stateMachine = stateMachine;
@@ -21,12 +21,12 @@ public class State
     public virtual void Enter()
     {
         startTime = Time.time;
-        entity.animator.SetBool(animBoolName,true); 
+        entity.UnitAnimator.SetBool(animBoolName,true); 
     }   
 
     public virtual void Exit()
     {
-        entity.animator.SetBool(animBoolName, false);
+        entity.UnitAnimator.SetBool(animBoolName, false);
     }
 
     public virtual void LogicUpdate()
@@ -34,7 +34,7 @@ public class State
 
     }
 
-    public virtual void PhysicsUpdate()
+    public virtual void ControlledUpdate()
     {
 
     }

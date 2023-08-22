@@ -6,7 +6,7 @@ public class ShibaArcher_MoveState : MoveState
 {
     protected ShibaArcher shibaArcher;
 
-    public ShibaArcher_MoveState(Entity entity, FinitStateMachine stateMachine, string animBoolName, ShibaArcher shibaArcher) : base(entity, stateMachine, animBoolName)
+    public ShibaArcher_MoveState(Unit entity, FinitStateMachine stateMachine, string animBoolName, ShibaArcher shibaArcher) : base(entity, stateMachine, animBoolName)
     {
         this.shibaArcher = shibaArcher;
     }
@@ -24,14 +24,14 @@ public class ShibaArcher_MoveState : MoveState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
-        if (BattleCommunicator.instance.CheckEnemyTower(shibaArcher)) stateMachine.ChangeState(shibaArcher.attackState);
-        if (BattleCommunicator.instance.CheckEnemy(shibaArcher)) stateMachine.ChangeState(shibaArcher.attackState);
-        if (BattleCommunicator.instance.CheckBarrier(shibaArcher)) stateMachine.ChangeState(shibaArcher.idleState);
     }
 
-    public override void PhysicsUpdate()    
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
+
+        if (BattleCommunicator.instance.CheckEnemyBuilding(shibaArcher)) stateMachine.ChangeState(shibaArcher.attackState);
+        if (BattleCommunicator.instance.CheckEnemy(shibaArcher)) stateMachine.ChangeState(shibaArcher.attackState);
+        if (BattleCommunicator.instance.CheckBarrier(shibaArcher)) stateMachine.ChangeState(shibaArcher.idleState);
     }
 }

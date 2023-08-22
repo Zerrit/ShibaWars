@@ -1,23 +1,20 @@
-using PathCreation;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityPooler : ObjectPooller<Entity>
+public class EntityPooler : ObjectPooller<Unit>
 {
-    private bool isRightSidePlayer;
+    private PlayerSide side;
 
-    public EntityPooler(Entity prefab, Transform container, int count, bool isRightSidePlayer = false, bool isAutoExpand = true) : base(prefab, container, isAutoExpand)
+    public EntityPooler(Unit prefab, Transform container, int count, PlayerSide side, bool isAutoExpand = true) : base(prefab, container, isAutoExpand)
     {
-        this.isRightSidePlayer = isRightSidePlayer;
+        this.side = side;
 
         CreatePool(count);
     }
 
-    public override Entity CreateObject(bool isActiveByDefault = false)
+    public override Unit CreateObject(bool isActiveByDefault = false)
     {
-        Entity createdObject = Object.Instantiate(prefab, container);
-        createdObject.Initialize(isRightSidePlayer);
+        Unit createdObject = Object.Instantiate(prefab, container);
+        createdObject.Initialize(side);
         createdObject.gameObject.SetActive(isActiveByDefault);
         pool.Add(createdObject);
         return createdObject;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShibaSamurai_MoveState : MoveState
 {
     private ShibaSamurai shibaSamurai;
-    public ShibaSamurai_MoveState(Entity entity, FinitStateMachine stateMachine, string animBoolName, ShibaSamurai shibaSamurai) : base(entity, stateMachine, animBoolName)
+    public ShibaSamurai_MoveState(Unit entity, FinitStateMachine stateMachine, string animBoolName, ShibaSamurai shibaSamurai) : base(entity, stateMachine, animBoolName)
     {
         this.shibaSamurai = shibaSamurai;
     }
@@ -23,14 +23,14 @@ public class ShibaSamurai_MoveState : MoveState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
-        if (BattleCommunicator.instance.CheckEnemyTower(shibaSamurai)) stateMachine.ChangeState(shibaSamurai.attackState);
-        if (BattleCommunicator.instance.CheckEnemy(shibaSamurai)) stateMachine.ChangeState(shibaSamurai.attackState);
-        if (BattleCommunicator.instance.CheckBarrier(shibaSamurai)) stateMachine.ChangeState(shibaSamurai.idleState);
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
+
+        if (BattleCommunicator.instance.CheckEnemyBuilding(shibaSamurai)) stateMachine.ChangeState(shibaSamurai.attackState);
+        if (BattleCommunicator.instance.CheckEnemy(shibaSamurai)) stateMachine.ChangeState(shibaSamurai.attackState);
+        if (BattleCommunicator.instance.CheckBarrier(shibaSamurai)) stateMachine.ChangeState(shibaSamurai.idleState);
     }
 }

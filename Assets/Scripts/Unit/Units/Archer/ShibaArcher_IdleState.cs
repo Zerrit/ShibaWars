@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShibaArcher_IdleState : IdleState
 {
     protected ShibaArcher shibaArcher;
-    public ShibaArcher_IdleState(Entity entity, FinitStateMachine stateMachine, string animBoolName, ShibaArcher shibaArcher) : base(entity, stateMachine, animBoolName)
+    public ShibaArcher_IdleState(Unit entity, FinitStateMachine stateMachine, string animBoolName, ShibaArcher shibaArcher) : base(entity, stateMachine, animBoolName)
     {
         this.shibaArcher = shibaArcher;
     }
@@ -24,11 +24,14 @@ public class ShibaArcher_IdleState : IdleState
     {
         base.LogicUpdate();
 
-        if (Time.time >= startTime + 0.7f) stateMachine.ChangeState(shibaArcher.moveState);
+        if (Time.time >= startTime + 0.5f && !BattleCommunicator.instance.CheckBarrier(shibaArcher))
+        {
+            stateMachine.ChangeState(shibaArcher.moveState);
+        }
     }
 
-    public override void PhysicsUpdate()
+    public override void ControlledUpdate()
     {
-        base.PhysicsUpdate();
+        base.ControlledUpdate();
     }
 }

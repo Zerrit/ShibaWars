@@ -5,23 +5,34 @@ using UnityEngine;
 public  class AbilityCaster : MonoBehaviour
 {
     [Header("Abilities")]
-    public Ability[] abilities;
+    public AbilityTemplate[] abilities;
 
+    public Transform abilityPoolTransform;
     private bool isAbilityChosen = false;
     private int chosenAbility;
 
+
     private void OnEnable()
     {
-        StartCoroutine(SubscribeEvent());
+        EventsManager.instance.OnAbilitySelect += SelectAbility;
+        InitAbilityPools();
     }
     private void OnDisable()
     {
         EventsManager.instance.OnAbilitySelect -= SelectAbility;
     }
-
     public void Update()
     {
         ApplyAbility();
+    }
+
+
+    private void InitAbilityPools()
+    {
+        for (int i = 0; i < abilities.Length; i++)
+        {
+            abilities[i].pool = new AbilityPoller(abilities[i].ability, abilityPoolTransform, 1, PlayerSide.leftPlayer);
+        }
     }
 
     public void SelectAbility(int number)
@@ -42,19 +53,16 @@ public  class AbilityCaster : MonoBehaviour
     {
         if (isAbilityChosen && Input.GetMouseButtonDown(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).y > -8)
         {
-            if(abilities[chosenAbility].UseAbility(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
+            if(abilities[chosenAbility].pool.HasFreeElement(out Ability ability))
             {
-                isAbilityChosen = false;
-                EventsManager.instance.CastAbility(chosenAbility);
-            }      
+                if (ability.SelectTarget(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
+                {
+                    ability.gameObject.SetActive(true);
+                    ability.UseAbility();
+                    isAbilityChosen = false;
+                    EventsManager.instance.CastAbility(chosenAbility);
+                }
+            }     
         } 
-    }
-
-
-    private IEnumerator SubscribeEvent()
-    {
-        yield return new WaitUntil(() => EventsManager.instance != null);
-
-        EventsManager.instance.OnAbilitySelect += SelectAbility;
     }
 }
