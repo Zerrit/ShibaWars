@@ -26,7 +26,7 @@ public class ArrowRain : Ability
     }
 
 
-    public override void Initialize(PlayerSide side)
+    public override void Initialize(Side side)
     {
         this.side = side;
         allTargets = new List<IDamageable>();

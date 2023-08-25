@@ -16,11 +16,11 @@ public class BattleUI : MonoBehaviour
 
     [Header("Components")]
     public WorkerButton workerButton;
-    public ButtonController unitButton;
-    public ButtonController abilityButton;
+    public UnitButton[] unitButtons;
+    public AbilityButton[] abilityButtons;
 
 
-    private void OnEnable()
+    private void Subscribe()
     {
         EventsManager.instance.OnGoldUpdate += UpdateGoldScore;
         EventsManager.instance.OnEnergyUpdate += UpdateEnergyScore;
@@ -33,42 +33,40 @@ public class BattleUI : MonoBehaviour
         EventsManager.instance.OnWorkersUpdate -= UpdateWorkers;
     }
 
-    public void InitializeWorkerButton(ButtonParameters workerParams)
-    {
-        FillButtonData(workerButton, workerParams, 0);
-    }
-    public void InitializeUnitButtons(UnitsSpawner unitSpawner)
-    {
-        if (unitSpawner.units.Length == 0) return;
 
-        int unitId = 0;
-        foreach (UnitTemplate unit in unitSpawner.units)
+    public void Initialize(ButtonParameters workerParameters, UnitTemplate[] units, AbilityTemplate[] abilities)
+    {
+        ConfigureButton(workerButton, workerParameters, 0);
+
+        if(units.Length != 0)
         {
-            ButtonController button = Instantiate(unitButton, actionButtonPanel);
-            FillButtonData(button, unit.buttonParameters, unitId);
-            unitId++;
+            for(int i = 0; i < units.Length; i++)
+            {
+                ConfigureButton(unitButtons[i], units[i].buttonParameters, i);
+            }
         }
-    }
-    public void InitializeAbilityButtons(AbilityCaster abilityCaster)
-    {
-        if (abilityCaster.abilities.Length == 0) return;
 
-        int abilityId = 0;
-        foreach (AbilityTemplate ability in abilityCaster.abilities)
+        if (abilities.Length != 0)
         {
-            ButtonController button = Instantiate(abilityButton, actionButtonPanel);
-            FillButtonData(button, ability.buttonParameters, abilityId);
-            abilityId++;
+            for (int i = 0; i < abilities.Length; i++)
+            {
+                ConfigureButton(abilityButtons[i], abilities[i].buttonParameters, i);
+            }
         }
+
+        Subscribe();
     }
 
-    private void FillButtonData(ButtonController button, ButtonParameters buttonParameters, int buttonId)
+
+    private void ConfigureButton(ButtonController button, ButtonParameters buttonParameters, int buttonId)
     {
         button.button.image.sprite = buttonParameters.buttonIcone;
         button.cooldown = buttonParameters.cooldown;
         button.cost = buttonParameters.cost;
         button.costText.text = button.cost.ToString();
         button.buttonId = buttonId;
+        button.gameObject.SetActive(true);
+        button.Initialize();
     }
 
     private void UpdateGoldScore(int value)

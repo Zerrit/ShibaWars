@@ -5,9 +5,9 @@ public class WorkerButton : ButtonController
 {
     public bool isLimitReached;
 
-    protected override void OnEnable()
+    public override void Initialize()
     {
-        base.OnEnable();
+        base.Initialize();
         EventsManager.instance.OnGoldUpdate += CheckEccess;
     }
     protected override void OnDisable()

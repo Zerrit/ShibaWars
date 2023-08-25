@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,9 @@ using UnityEngine.UI;
 
 public class Mine : MonoBehaviour, IDamageable
 {
-    public bool isDefeated;
+    [SerializeField] private Side side;
+
+    private Side playerSide;
 
     public int maxHealth = 250;
     public float distance;
@@ -22,46 +25,41 @@ public class Mine : MonoBehaviour, IDamageable
     public Transform SelfTransform { get; set; }
     public bool IsDefeated { get; set; }
 
-    public PlayerSide side;
 
-
-
-    private void Start()
+    public void Initialize(Side playerSide)
     {
-        IsDefeated = isDefeated;
+        this.playerSide = playerSide;
         MaxHealth = maxHealth;
         SelfTransform = transform;
         buildButton.onClick.AddListener(BuildMine);
 
-        if (IsDefeated)
+        switch (side)
         {
-            buildButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            buildButton.gameObject.SetActive(false);
+            case Side.neutral:
+                IsDefeated = true;
+                break;
 
-        }
+            case Side.left:
+                BuildMine();
+                break;
 
-
-        if (!IsDefeated)
-        {
-            CurrentHealth = MaxHealth;
-            EventsManager.instance.TakeMine();
+            case Side.right:
+                BuildMine();
+                break;
         }
     }
 
     private void Update()
     {
-        if (isDefeated) ChangeInfluence();
+        if (IsDefeated) TrackInfluence();
     }
 
-    private void ChangeInfluence()
+    private void TrackInfluence()
     {
-        PlayerSide currentInfluence = BattleCommunicator.instance.DefineInfluence(SelfTransform.position.x);
-        if (side != currentInfluence)
+        if(BattleCommunicator.instance.CheckInfluenceChange(SelfTransform.position.x, ref side))
         {
-            side = currentInfluence;
+            if (side == playerSide) ShowButton();
+            else HideButton();
         }
     }
 
@@ -71,17 +69,13 @@ public class Mine : MonoBehaviour, IDamageable
         IsDefeated = false;
         CurrentHealth = MaxHealth;
         healthBar.localScale = new Vector2(1, 1);
+        heatlhBarlObject.SetActive(true);
         EventsManager.instance.TakeMine();
+        BattleCommunicator.instance.AddBuilding(this, side);
 
-        if (side == PlayerSide.leftPlayer) leftPlayerFlag.SetActive(true);
-        else rightPlayerFlag.SetActive(true);
+        if (side == Side.left) leftPlayerFlag.SetActive(true);
+        else if(side == Side.right) rightPlayerFlag.SetActive(true);
     }
-
-    private void Conquest()
-    {
-
-    }
-
 
     public void GetDamage(float damage)
     {
@@ -97,24 +91,25 @@ public class Mine : MonoBehaviour, IDamageable
     public void DefeatSelf()
     {
         IsDefeated = true;
+        EventsManager.instance.LostMine();
+        BattleCommunicator.instance.RevomeBuilding(this, side);
+
+        ChangeInfluence();
+
         leftPlayerFlag.SetActive(false);
         rightPlayerFlag.SetActive(false);
-
-        EventsManager.instance.LostMine();
-
-        if (side == GameBootstrap.instance.playerSide) ShowButton();
-
+        heatlhBarlObject.SetActive(false);
     }
 
-    private void InstallFlag()
+    private void ChangeInfluence()
     {
-        if (side == PlayerSide.leftPlayer) leftPlayerFlag.SetActive(true);
-        if (side == PlayerSide.rightPlayer) rightPlayerFlag.SetActive(true);
+        if (side == Side.left) side = Side.right;
+        else side = Side.left;
     }
-
     private void ShowButton()
     {
         buildButton.gameObject.SetActive(true);
+        buildButton.onClick.AddListener(BuildMine);
     }
 
     private void HideButton()

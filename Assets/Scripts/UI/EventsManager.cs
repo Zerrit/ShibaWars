@@ -15,9 +15,10 @@ public class EventsManager
     public delegate void EventHandler(int paramValue);
     public delegate void DoubleParamsEventHandler(int firstParam, int secondParam);
     public delegate void BoolEventHandler(bool condition);
+    public delegate void PositionEventHandler(Vector2 position);
 
 
-
+    public event PositionEventHandler OnBattlefieldTouch;
     // Event нажатия кнопки создания рабочего
     public event EmptyEventHandler OnWorkerAdd;
     public event EmptyEventHandler OnMineTaken, OnMineLost;
@@ -36,6 +37,10 @@ public class EventsManager
     public event EventHandler OnGoldReduce, OnEnergyReduce;
 
 
+    public void TouchBattlefield(Vector2 position)
+    {
+        OnBattlefieldTouch?.Invoke(position);
+    }
 
     public void AddWorker()
     {

@@ -1,10 +1,16 @@
 
 public class UnitButton : ButtonController
 {
-    protected override void OnEnable()
+    public override void Initialize()
     {
-        base.OnEnable();
+        base.Initialize();
         EventsManager.instance.OnGoldUpdate += CheckEccess;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        EventsManager.instance.OnGoldUpdate -= CheckEccess;
     }
 
     protected override void PressButton()

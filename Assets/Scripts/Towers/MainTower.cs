@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerSide
+public enum Side
 {
-    leftPlayer,
-    rightPlayer,
+    left,
+    right,
     neutral
 }
 
 public class MainTower : MonoBehaviour, IDamageable
 {
-    public PlayerSide playerSide;
+    public Side playerSide;
 
     public int maxHealth = 250;
     public float distance;

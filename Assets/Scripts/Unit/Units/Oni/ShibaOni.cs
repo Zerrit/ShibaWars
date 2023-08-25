@@ -11,6 +11,7 @@ public class ShibaOni : Unit
 
 
     public Transform AttackPoint;
+    private List<Unit> enemies = new();
 
 
     public override void Awake()
@@ -30,7 +31,8 @@ public class ShibaOni : Unit
     {
         base.Attack();
 
-        List<Unit> enemies = BattleCommunicator.instance.CheckEnemies(this);
+        enemies.Clear();
+        BattleCommunicator.instance.GetAllEnemies(this, ref enemies);
         foreach (Unit unit in enemies)
         {
             unit.GetDamage(damage);

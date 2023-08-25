@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class EntityPooler : ObjectPooller<Unit>
 {
-    private PlayerSide side;
+    private Side side;
 
-    public EntityPooler(Unit prefab, Transform container, int count, PlayerSide side, bool isAutoExpand = true) : base(prefab, container, isAutoExpand)
+    public EntityPooler(Unit prefab, Transform container, int count, Side side, bool isAutoExpand = true) : base(prefab, container, isAutoExpand)
     {
         this.side = side;
 

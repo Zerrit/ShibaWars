@@ -14,7 +14,7 @@ public class Unit : MonoBehaviour, IDamageable
 {
     public UnitData UnitParameters;
     [SerializeField]
-    private Transform _healthBar;
+    private SpriteRenderer _healthBar;
     [SerializeField]
     private Transform _spritesRoot;
 
@@ -30,7 +30,7 @@ public class Unit : MonoBehaviour, IDamageable
     public Transform SelfTransform { get; set; }
     public bool IsDefeated { get; set; }
 
-    public PlayerSide Side { get; private set; }
+    public Side Side { get; private set; }
     public IDamageable enemy;
 
     public float distance;
@@ -66,12 +66,13 @@ public class Unit : MonoBehaviour, IDamageable
         }
     }
 
-    public virtual void Initialize(PlayerSide side)
+    public virtual void Initialize(Side side)
     {
-        if (side == PlayerSide.rightPlayer)
+        if (side == Side.right)
         {
             direction = -1;
             _spritesRoot.Rotate(new Vector2(0, 180), Space.World);
+            _healthBar.color = Color.red;
             this.Side = side;
         }
         else
@@ -90,7 +91,7 @@ public class Unit : MonoBehaviour, IDamageable
 
         MaxHealth = UnitParameters.maxHealth;
         CurrentHealth = MaxHealth;
-        _healthBar.localScale = new Vector2(1,1);
+        _healthBar.transform.localScale = new Vector2(1,1);
         IsDefeated = false;
         speed = UnitParameters.speed;
         damage = UnitParameters.damage;
@@ -143,7 +144,7 @@ public class Unit : MonoBehaviour, IDamageable
         if (IsDefeated != true)
         {
             CurrentHealth -= damage;
-            _healthBar.localScale = new Vector2(Mathf.Clamp01(CurrentHealth / MaxHealth), 1f);
+            _healthBar.transform.localScale = new Vector2(Mathf.Clamp01(CurrentHealth / MaxHealth), 1f);
 
             if (CurrentHealth <= 0) DefeatSelf();
         }

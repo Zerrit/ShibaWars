@@ -17,13 +17,14 @@ public class ButtonController : MonoBehaviour
     protected bool onCooldown;
     private float timer;
 
-    protected virtual void OnEnable()
+    public virtual void Initialize()
     {
         button.onClick.AddListener(PressButton);
     }
 
     protected virtual void OnDisable()
     {
+        button.onClick.RemoveAllListeners();
     }
 
 

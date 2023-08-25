@@ -33,7 +33,7 @@ public class Ai_Tower : MainTower
     {
         base.Start();
 
-        samuraiPool = new EntityPooler(samurai, unitPoolTransform, 0, PlayerSide.rightPlayer);
+        samuraiPool = new EntityPooler(samurai, unitPoolTransform, 0, Side.right);
         //archerPool = new ObjectPooller<Entity>(archer, 4, unitPoolTransform);
         //technicPool = new ObjectPooller<Entity>(ninja, 2, unitPoolTransform);
         //elitPool = new ObjectPooller<Entity>(oni, 2, unitPoolTransform);

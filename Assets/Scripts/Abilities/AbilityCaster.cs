@@ -1,68 +1,72 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public  class AbilityCaster : MonoBehaviour
+public  class AbilityCaster : IPointerClickHandler
 {
-    [Header("Abilities")]
-    public AbilityTemplate[] abilities;
+    private AbilityTemplate[] _abilities;
+    
+    private bool _isAbilityChosen = false;
+    private int _chosenAbility;
 
-    public Transform abilityPoolTransform;
-    private bool isAbilityChosen = false;
-    private int chosenAbility;
+    public AbilityCaster(AbilityTemplate[] abilities, Transform poolTransform, Side side)
+    {
+        this._abilities = abilities;
+        CreateAbilityPools(poolTransform, side);
+    }
 
-
-    private void OnEnable()
+    public void Subscribe()
     {
         EventsManager.instance.OnAbilitySelect += SelectAbility;
-        InitAbilityPools();
+        EventsManager.instance.OnBattlefieldTouch += ApplyAbility;
     }
-    private void OnDisable()
+    public void Unsubscribe()
     {
         EventsManager.instance.OnAbilitySelect -= SelectAbility;
     }
-    public void Update()
+
+
+
+    public void OnPointerClick(PointerEventData eventData)
     {
-        ApplyAbility();
+        ApplyAbility(Camera.main.ScreenToWorldPoint(eventData.position));
     }
 
-
-    private void InitAbilityPools()
+    private void CreateAbilityPools(Transform poolTransform, Side side)
     {
-        for (int i = 0; i < abilities.Length; i++)
+        for (int i = 0; i < _abilities.Length; i++)
         {
-            abilities[i].pool = new AbilityPoller(abilities[i].ability, abilityPoolTransform, 1, PlayerSide.leftPlayer);
+            _abilities[i].pool = new AbilityPoller(_abilities[i].ability, poolTransform, 1, side);
         }
     }
 
     public void SelectAbility(int number)
     {
-        if (number == chosenAbility && isAbilityChosen)
+        if (number == _chosenAbility && _isAbilityChosen)
         {
-            isAbilityChosen = false;
+            _isAbilityChosen = false;
         }
         else
         {
-            isAbilityChosen = true;
-            chosenAbility = number;
-            print("Выбрана способность" + abilities[number].ToString());
+            _isAbilityChosen = true;
+            _chosenAbility = number;
         }
     }
 
-    private void ApplyAbility()
+    public void ApplyAbility(Vector2 touchPos)
     {
-        if (isAbilityChosen && Input.GetMouseButtonDown(0) && Camera.main.ScreenToWorldPoint(Input.mousePosition).y > -8)
+        if (_isAbilityChosen && touchPos.y > -8)
         {
-            if(abilities[chosenAbility].pool.HasFreeElement(out Ability ability))
+            if(_abilities[_chosenAbility].pool.HasFreeElement(out Ability ability))
             {
-                if (ability.SelectTarget(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
+                if (ability.SelectTarget(touchPos))
                 {
                     ability.gameObject.SetActive(true);
                     ability.UseAbility();
-                    isAbilityChosen = false;
-                    EventsManager.instance.CastAbility(chosenAbility);
+                    _isAbilityChosen = false;
+                    EventsManager.instance.CastAbility(_chosenAbility);
                 }
             }     
         } 
     }
+
 }

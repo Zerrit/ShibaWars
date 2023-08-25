@@ -1,39 +1,37 @@
-using System.Collections;
 using UnityEngine;
 
-public class UnitsSpawner: MonoBehaviour
+public class UnitsSpawner
 {
-    public UnitTemplate[] units;
-    public Transform unitPoolTransform;
+    private UnitTemplate[] _units;
 
-
-    private void Start()
+    public UnitsSpawner(UnitTemplate[] units, Transform poolTransform, Side side)
     {
-        InitUnitPools();
+        this._units = units;
+        CreateUnitPools(poolTransform, side);
     }
 
-    private void OnEnable()
+    public void Subscribe()
     {
         EventsManager.instance.OnUnitCreate += CreateUnit;
     }
-    private void OnDisable()
+    public void Unsubscribe()
     {
         EventsManager.instance.OnUnitCreate -= CreateUnit;
     }
 
 
 
-    private void InitUnitPools()
+    private void CreateUnitPools(Transform poolTransform, Side side)
     {
-        for (int i = 0; i < units.Length; i++)
+        for (int i = 0; i < _units.Length; i++)
         {
-            units[i].pool = new EntityPooler(units[i].unit, unitPoolTransform, 4 - i, PlayerSide.leftPlayer);
+            _units[i].pool = new EntityPooler(_units[i].unit, poolTransform, 4 - i, side);
         }
     }
 
     public void CreateUnit(int unitNumber)
     {
-        Unit unit = units[unitNumber].pool.GetFreeElement();
+        Unit unit = _units[unitNumber].pool.GetFreeElement();
         BattleCommunicator.instance.AddUnit(unit);
     }
 }

@@ -34,7 +34,7 @@ public class Barricade : Ability, IDamageable
     }
 
 
-    public override void Initialize(PlayerSide side)
+    public override void Initialize(Side side)
     {
         this.side = side;
         MaxHealth = maxHealth;

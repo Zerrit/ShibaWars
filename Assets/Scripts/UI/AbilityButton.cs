@@ -8,12 +8,20 @@ public class AbilityButton : ButtonController
     public ParticleSystem selectedFX;
 
 
-    protected override void OnEnable()
+    public override void Initialize()
     {
-        base.OnEnable();
+        base.Initialize();
         EventsManager.instance.OnEnergyUpdate += CheckEccess;
         EventsManager.instance.OnAbilitySelect += SwitchSelectMode;
         EventsManager.instance.OnAbilityCast += ApplyAbility;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        EventsManager.instance.OnEnergyUpdate -= CheckEccess;
+        EventsManager.instance.OnAbilitySelect -= SwitchSelectMode;
+        EventsManager.instance.OnAbilityCast -= ApplyAbility;
     }
 
     protected override void PressButton()
