@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3eab894e1913814bad7ccc06f9455e0, type: 3}
+  m_Name: ArcherSFX
+  m_EditorClassIdentifier: 
+  spawnSound: {fileID: 8300000, guid: 2c290e764a6f3e34c98eb6e4fe90df87, type: 3}
+  attackSound: {fileID: 8300000, guid: c9b22df2a46bbea4c82720fbe7c816e4, type: 3}
+  deathSound: {fileID: 8300000, guid: 2bd65c60a6bc0a64a89fa4dc3ce840ca, type: 3}

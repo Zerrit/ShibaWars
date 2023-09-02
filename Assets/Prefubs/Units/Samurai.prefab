@@ -757,7 +757,7 @@ GameObject:
   - component: {fileID: 3463488560210855140}
   - component: {fileID: 8946209487579026711}
   - component: {fileID: 89127069009253224}
-  - component: {fileID: 1661835777959086090}
+  - component: {fileID: 7110895879047790701}
   m_Layer: 7
   m_Name: Samurai
   m_TagString: Untagged
@@ -828,15 +828,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UnitParameters: {fileID: 11400000, guid: 3ce9f869be36614499c3dd16fefda21a, type: 2}
-  _healthBar: {fileID: 4693310628215786325}
-  _spritesRoot: {fileID: 4316618966704643063}
+  UnitHealthBar: {fileID: 4251695056722426995}
   distance: 0
   heightIndex: 0
   speed: 0
-  damage: 0
   checkEnemyDistance: 0
   maxAttackRange: 0
---- !u!114 &1661835777959086090
+  _samuraiSFX: {fileID: 11400000, guid: ee5992ed85e598742bf5bf320ef92814, type: 2}
+  _samuraiVFX: {fileID: 7110895879047790701}
+--- !u!114 &7110895879047790701
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -845,10 +845,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8464418770926677902}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c27be221285b344681eb687ae4e37cd, type: 3}
+  m_Script: {fileID: 11500000, guid: d538d4710d4e2ff47bec3ec417612aa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackFX: {fileID: 7115927827077231308}
+  hitFX: {fileID: 7115927827077231308}
 --- !u!1 &9216902903237199551
 GameObject:
   m_ObjectHideFlags: 0
@@ -1029,6 +1029,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthBar
       objectReference: {fileID: 0}
+    - target: {fileID: 5691295650125419121, guid: 8d9fbee6b134caf40a7d403277418d1b, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5691295650125419121, guid: 8d9fbee6b134caf40a7d403277418d1b, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5691295650125419121, guid: 8d9fbee6b134caf40a7d403277418d1b, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5691295650125419121, guid: 8d9fbee6b134caf40a7d403277418d1b, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7451313825482521265, guid: 8d9fbee6b134caf40a7d403277418d1b, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1073,18 +1089,28 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9041585228074190576, guid: 8d9fbee6b134caf40a7d403277418d1b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d9fbee6b134caf40a7d403277418d1b, type: 3}
+--- !u!114 &4251695056722426995 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6939734337864856050, guid: 8d9fbee6b134caf40a7d403277418d1b, type: 3}
+  m_PrefabInstance: {fileID: 6579738972341833089}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0e1754ff2eba74caa5fc116d153bf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4334591281510299440 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7451313825482521265, guid: 8d9fbee6b134caf40a7d403277418d1b, type: 3}
-  m_PrefabInstance: {fileID: 6579738972341833089}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &4693310628215786325 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 1904477947887388372, guid: 8d9fbee6b134caf40a7d403277418d1b, type: 3}
   m_PrefabInstance: {fileID: 6579738972341833089}
   m_PrefabAsset: {fileID: 0}
